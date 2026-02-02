@@ -19,7 +19,7 @@ public class Products {
 
     public void setPrice(double price) {
         if(price < 0.9) {
-            throw new IllegalAccessException("Price cannot lower than 0.9!");
+            throw new IllegalArgumentException("Price cannot lower than 0.9!");
         }
         this.price = price;
     }
