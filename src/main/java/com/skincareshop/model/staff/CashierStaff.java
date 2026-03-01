@@ -1,7 +1,9 @@
 package com.skincareshop.model.staff;
 
-public class ManagerStaff implements IStaff{
+import com.skincareshop.model.SkincareShop;
 
+public class CashierStaff implements IStaff{
+   
     private String staffId;
     private String fullName;
     private String username;
@@ -12,10 +14,15 @@ public class ManagerStaff implements IStaff{
 
     @Override
     public boolean hasPermission(String action) {
-        return true;
+        if (action.equals(SkincareShop.CREATE_ORDER) || action.equals(SkincareShop.CREATE_CUSTOMER)
+        || action.equals(SkincareShop.VIEW_CUSTOMER) || action.equals(SkincareShop.VIEW_CUSTOMER)){
+            return true;
+        }
+        return false; 
     }
 
-    public ManagerStaff(String staffId, String fullName, String username,
+
+    public CashierStaff(String staffId, String fullName, String username,
          String password, String position) {
 
         setStaffId(staffId);
@@ -26,7 +33,6 @@ public class ManagerStaff implements IStaff{
 
         this.active = true;
     }
-
 
     public String getStaffId() { return staffId; }
     public String getFullName() { return fullName; }
