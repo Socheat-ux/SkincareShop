@@ -1,5 +1,7 @@
 package com.skincareshop.model.order;
 
-public class Toner {
+import com.skincareshop.model.ProductsItem;
+
+public class Toner extends ProductsItem {
     
 }

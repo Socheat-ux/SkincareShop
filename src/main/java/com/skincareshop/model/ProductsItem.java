@@ -1,6 +1,6 @@
 package com.skincareshop.model;
 
-public class ProductsItem {
+public abstract class ProductsItem {
     private Products product;
     private int quantity;
 
