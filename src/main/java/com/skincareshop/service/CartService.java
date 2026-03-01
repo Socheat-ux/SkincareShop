@@ -14,6 +14,7 @@ public class CartService {
 
     public void addProductsItem(Products product, int quantity){
         cart.add(new ProductsItem(product, quantity));
+
     }
 
      public double getTotalPrice(){

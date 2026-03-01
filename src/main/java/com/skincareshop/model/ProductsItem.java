@@ -1,6 +1,6 @@
 package com.skincareshop.model;
 
-public abstract class ProductsItem {
+public class ProductsItem {
     private Products product;
     private int quantity;
 
@@ -28,7 +28,6 @@ public abstract class ProductsItem {
     public double getTotalPrice(){
         return quantity * product.getPrice();
     }
-
 
 
     @Override
