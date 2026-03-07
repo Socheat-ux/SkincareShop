@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.skincareshop.model.staff.IStaff;
 import com.skincareshop.model.staff.ManagerStaff;
+import com.skincareshop.model.staff.Staff;
 
 public class SkincareShop {
 
@@ -44,7 +45,8 @@ public class SkincareShop {
     }
 
     private void seedDefaultAdmin() {
-        IStaff admin = new ManagerStaff("S001", "Admin", "admin", "1234", "Manager");
+        Staff s1 = new Staff("S001", "Admin", "010000000", "admin", "1234");
+        ManagerStaff admin = new ManagerStaff(s1, 2000);
         staffs.add(admin);
     }
 

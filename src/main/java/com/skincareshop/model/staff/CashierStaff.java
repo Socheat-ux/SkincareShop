@@ -2,15 +2,14 @@ package com.skincareshop.model.staff;
 
 import com.skincareshop.model.SkincareShop;
 
-public class CashierStaff implements IStaff{
-   
-    private String staffId;
-    private String fullName;
-    private String username;
-    private String password;   
-    private String position;
-    private boolean active;
+public class CashierStaff extends Staff {
  
+    private float salary;
+
+    public CashierStaff(Staff S1, float salary) {
+        super(S1.getStaffId(), S1.getFullName(), S1.getUsername(), 
+        S1.getPhone(), S1.getPassword(), S1.setSalary());
+    }
 
     @Override
     public boolean hasPermission(String action) {
@@ -21,54 +20,37 @@ public class CashierStaff implements IStaff{
         return false; 
     }
 
+    public float getSalary() { return salary; }
 
-    public CashierStaff(String staffId, String fullName, String username,
-         String password, String position) {
-
-        setStaffId(staffId);
-        setFullName(fullName);
-        setUsername(username);
-        setPassword(password);
-        setPosition(position);
-
-        this.active = true;
+    public void setSalary(float salary) {
+        if (salary < 800) {
+            throw new IllegalArgumentException("ERROR!");
+        }
+        else {
+            this.salary = salary;
+        }
     }
 
-    public String getStaffId() { return staffId; }
-    public String getFullName() { return fullName; }
-    public String getUsername() { return username; }
-    public String getPosition() { return position; }
-    public boolean isActive() { return active; }
+    @Override
+    public boolean equals(Object obj) {
+        CashierStaff other = (CashierStaff) obj;
 
-    public boolean checkPassword(String input) {
-        return password != null && password.equals(input);
+        if(!super.equals(obj)) {
+            return false;
+        }
+        else {
+            if (Float.floatToIntBits(salary) != Float.floatToIntBits(other.salary))
+            return false;
+        }
+        return true;
     }
 
-    // ====== Setters ======
-    public void setStaffId(String staffId) {
-        if (staffId.isBlank()) this.staffId = "UNKNOWN";
-        else this.staffId = staffId.trim();
+    @Override
+    public String toString() {
+        return super.toString() + 
+                ", salary=" + salary +
+                '}';
     }
-
-    public void setFullName(String fullName) {
-        if (fullName.isBlank()) this.fullName = "No Name";
-        else this.fullName = fullName.trim();
-    }
-
-    public void setUsername(String username) {
-        if (username.isBlank()) this.username = this.staffId + "_UNKNOWN";
-        else this.username = username.trim();
-    }
-
-    public void setPassword(String password) {
-        String pw = (password == null) ? "" : password;
-        if (pw.length() < 4) this.password = "0000";
-        else this.password = pw;
-    }
-
-    public void setPosition(String position) {
-        if (position.isBlank()) this.position = "Staff";
-        else this.position = position.trim();
-    }
+   
 
 }
