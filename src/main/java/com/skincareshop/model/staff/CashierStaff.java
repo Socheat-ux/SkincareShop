@@ -8,7 +8,8 @@ public class CashierStaff extends Staff {
 
     public CashierStaff(Staff S1, float salary) {
         super(S1.getStaffId(), S1.getFullName(), S1.getUsername(), 
-        S1.getPhone(), S1.getPassword(), S1.setSalary());
+        S1.getPhone(), S1.getPassword());
+        this.setSalary(salary);
     }
 
     @Override
