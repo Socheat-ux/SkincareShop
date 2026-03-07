@@ -2,7 +2,6 @@ package com.skincareshop.service;
 
 import java.util.ArrayList;
 
-import com.skincareshop.model.other.Products;
 import com.skincareshop.model.other.ProductsItem;
 
 public class CartService {
@@ -12,8 +11,8 @@ public class CartService {
         cart =  new ArrayList<>();
     }
 
-    public void addProductsItem(Products product, int quantity){
-        cart.add(new ProductsItem(product, quantity));
+    public void addProductsItem(String name, double price, int quantity){
+        cart.add(new ProductsItem(name, price, quantity));
 
     }
 
@@ -45,11 +44,11 @@ public class CartService {
         if(cart.size() == 0) {
             System.out.println("No order yet!");
         }
-        System.out.println("-----Print Info-----");
+        System.out.println("-------------Print Info-------------");
         for (ProductsItem productsItem : cart) {
             System.out.println(productsItem);
         }
-        System.out.println("------------------------------");
+        System.out.println("------------------------------------");
         System.out.println("\tGrand Total: $" + getTotalPrice());
 
     }

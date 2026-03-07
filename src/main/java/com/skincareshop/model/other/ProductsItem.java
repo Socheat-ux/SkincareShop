@@ -1,12 +1,22 @@
 package com.skincareshop.model.other;
 
 public class ProductsItem {
-    private Products product;
+    private String name;
+    private double price;
     private int quantity;
 
-    public ProductsItem(Products product, int quantity){
-        this.product = product;
+    //constuctor
+    public ProductsItem(String name, double price, int quantity){
+        setName(name);
+        setPrice(price);
         setQuantity(quantity);
+    }
+
+    public void setName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Product don't have a name yet!");
+        }
+        this.name = name;
     }
 
     public void setQuantity(int quantity) {
@@ -16,23 +26,33 @@ public class ProductsItem {
         this.quantity = quantity;
     }
 
-    public Products getProduct() {
-        return new Products(product.getName(), product.getPrice());
+    public void setPrice(double price) {
+        if(price < 0.9) {
+            throw new IllegalArgumentException("Price cannot lower than 0.9!");
+        }
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+    
+    public double getPrice() {
+        return price;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-
     public double getTotalPrice(){
-        return quantity * product.getPrice();
+        return quantity * getPrice();
     }
 
 
     @Override
     public String toString() {
-        return product.getName() + " " + getQuantity() + " ($" + getTotalPrice() + ")";
+        return getName() + " " + getQuantity() + " ($" + getTotalPrice() + ")";
     }
 }
 
