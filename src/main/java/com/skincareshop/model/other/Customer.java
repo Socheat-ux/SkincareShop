@@ -1,4 +1,4 @@
-package com.skincareshop.model;
+package com.skincareshop.model.other;
 
 public class Customer {
 

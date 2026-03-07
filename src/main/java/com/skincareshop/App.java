@@ -1,7 +1,7 @@
 package com.skincareshop;
 
-import com.skincareshop.model.Products;
-import com.skincareshop.model.ProductsItem;
+import com.skincareshop.model.other.Products;
+import com.skincareshop.model.other.ProductsItem;
 import com.skincareshop.service.CartService;
 
 public class App 

@@ -2,8 +2,8 @@ package com.skincareshop.service;
 
 import java.util.ArrayList;
 
-import com.skincareshop.model.Products;
-import com.skincareshop.model.ProductsItem;
+import com.skincareshop.model.other.Products;
+import com.skincareshop.model.other.ProductsItem;
 
 public class CartService {
     private ArrayList<ProductsItem> cart;
