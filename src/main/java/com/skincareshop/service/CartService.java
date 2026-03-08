@@ -14,7 +14,7 @@ public class CartService {
 
     public void addProductsItem(Products product, int quantity){
         for (ProductsItem item : cart) {
-            if (item.getProduct().equals(product)) { // compare by reference or ID
+            if (item.getProduct().equals(product)) {
                 item.increaseQuantity(quantity);
                 return;
             }

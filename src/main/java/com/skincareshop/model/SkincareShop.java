@@ -20,7 +20,7 @@ public class SkincareShop {
 
     private String shopName;
     private String address;
-    private Strig lastMessage;
+    private String lastMessage;
     
     private ArrayList<Staff> staffs;
     private ArrayList<Customer> customers;
@@ -43,7 +43,7 @@ public class SkincareShop {
     
     public String getShopName() { return shopName; }
     public String getAddress() { return address; }
-    public Strig getLastMessage() { return lastMessage; }
+    public String getLastMessage() { return lastMessage; }
 
     public void setShopName(String shopName) {
         if (isBlank(shopName)) {
