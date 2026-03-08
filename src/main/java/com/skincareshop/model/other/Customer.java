@@ -1,5 +1,4 @@
-package com.projecttest.model;
-
+package com.skincareshop.model.other;
 
 public class Customer {
     private String customerId;

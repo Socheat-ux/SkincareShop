@@ -29,7 +29,7 @@ public class ManagerStaff extends Staff{
     }
 
     @Override
-    public boolean hasPermission(String action) {
+    public boolean can(String action) {
         return true; // Manager can do everything
     }
 

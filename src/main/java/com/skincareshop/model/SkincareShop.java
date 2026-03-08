@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.skincareshop.model.other.Customer;
 import com.skincareshop.model.other.Products;
-import com.skincareshop.model.staff.IStaff;
 import com.skincareshop.model.staff.ManagerStaff;
 import com.skincareshop.model.staff.CashierStaff;
 import com.skincareshop.model.staff.Staff;
