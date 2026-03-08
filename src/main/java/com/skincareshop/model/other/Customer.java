@@ -4,14 +4,16 @@ public class Customer {
 
     private String customerId;
     private String fullName;
+    private String phone;
 
-    public Customer (String customerId, String fullName){
+    public Customer (String customerId, String fullName, String phone){
         setCustomerId(customerId);
         setFullName(fullName);
     }
 
     public String getCustomerId() { return customerId; }
     public String getFullName() { return fullName; }
+    public String getPhone() { return phone; }
 
     public void setCustomerId(String customerId) {
         if (customerId.isBlank()) {

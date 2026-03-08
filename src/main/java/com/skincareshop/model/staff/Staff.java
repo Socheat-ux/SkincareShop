@@ -12,7 +12,7 @@ public class Staff implements IStaff{
 
 
     @Override
-    public boolean hasPermission(String action) {
+    public boolean can(String action) {
         return false;
     }
 

@@ -6,14 +6,15 @@ import com.skincareshop.model.other.Customer;
 import com.skincareshop.model.other.Products;
 import com.skincareshop.model.staff.IStaff;
 import com.skincareshop.model.staff.ManagerStaff;
+import com.skincareshop.model.staff.CashierStaff;
 import com.skincareshop.model.staff.Staff;
 
 public class SkincareShop {
 
     public static final String CREATE_STAFF = "CREATE_STAFF";
     public static final String CREATE_CUSTOMER = "CREATE_CUSTOMER";
-    public static final String CREATE_MENU_ITEM = "CREATE_PRODUCT_ITEM";
-    public static final String SET_MENU_AVAILABLITY = "SET_PRODUCT_AVAILABLITY";
+    public static final String CREATE_PRODUCT_ITEM = "CREATE_PRODUCT_ITEM";
+    public static final String SET_PRODUCT_AVAILABLITY = "SET_PRODUCT_AVAILABLITY";
     public static final String CREATE_ORDER = "CREATE_ORDER";
     public static final String VIEW_CUSTOMER = "VIEW_CUSTOMER";
     public static final String VIEW_ORDER = "VIEW_ORDER";
@@ -82,6 +83,183 @@ public class SkincareShop {
     }
 
     //This function checks if the currently logged-in staff has permission to do a specific action.
+    private boolean requirePermission(String action) {
+        if (!loggedInStaff.can(action)) {
+            setLastMessage("Permission Denied!");
+            return false;
+        }
+        return true;
+    }
+
+    //=============================//
+    //This function for staff login//
+    //=============================//
+    public void staffLogin(String username, String password) {
+        if (isBlank(username) || password == null) {
+            setLastMessage("Login failed! Missing username/password!");
+            return;
+        }
+        for (int i = 0; i < staffs.size(); i++) {
+            Staff staff = staffs.get(i);
+            if (staff.getUsername().equalsIgnoreCase(username.trim())) {
+                if (!staff.isActive()) {
+                    setLastMessage("Staff is inactive!");
+                    return;
+                }
+                if (!staff.checkPassword(password)) {
+                    setLastMessage("Loging failed! Wrong password!");
+                    return;
+                }
+                loggedInStaff = staff;
+                setLastMessage("Login success! Welcome " + staff.getFullName());
+                return;
+            }
+        }
+        setLastMessage("Login failed: Usrname not found!");
+    }
+
+    //==============================//
+    //This function for staff logout//
+    //==============================//
+    public void staffLogout() {
+        loggedInStaff = null;
+        setLastMessage("Logout successfully!");
+    }
+
+    //==============================//
+    //This function for create staff//
+    //==============================//
+    public void createStaff(String staffId, String fullName, String phone,
+                            String username, String password, String position) {
+        if  (!requireStaffLogin() || !requirePermission(CREATE_STAFF))  return;
+
+        if (isBlank(staffId) || isBlank(username)) {
+            setLastMessage("Cannot create staff: staffId/username is empty!");
+            return;
+        }
+        //use this to prevent duplicate username 
+        for (int i = 0; i < staffs.size(); i++) {
+            if (staffs.get(i).getUsername().equalsIgnoreCase(username)) {
+                setLastMessage("User name already exist!");
+                return;
+            }
+        }
+        //check position
+        if (position.equals("Manager")) {
+            staffs.add(new ManagerStaff(new Staff(staffId, fullName, phone, username, password), 2000));
+            setLastMessage("Manager created successfully.");
+        }
+        else if (position.equals("Cashier")) {
+            staffs.add(new CashierStaff(new Staff(staffId, fullName, phone, username, password), 1000));
+            setLastMessage("Cashier created successfully.");
+        }
+        else {
+            setLastMessage("Unknown position!");
+        }
+    }
+
+    //=================================//
+    //This function for create customer//
+    //=================================//
+    public void createCustomer(String customerId, String fullName, String phone, 
+                                String password, double balance ) {
+        if (!requireStaffLogin() || !requirePermission(CREATE_CUSTOMER)) return;
+
+        if (isBlank(customerId) || isBlank(phone)) {
+            setLastMessage("Cannot create customer: customerId/phone is empty!");
+            return;
+        }
+        for (int i = 0; i < customers.size(); i++) {
+            //prevent duplicate customerId
+            if (customers.get(i).getCustomerId().equalsIgnoreCase(customerId.trim())) {
+                setLastMessage("Cannot create customer: customerId already exists.");
+                return; 
+            }
+            if (customers.get(i).getPhone().equals(phone.trim())) {
+                setLastMessage("Cannot create customer: phone already exists.");
+                return;
+            }
+        }
+        customers.add(new Customer(customerId, fullName, phone, password, balance));
+        setLastMessage("Customer created successfully.");
+    }
+
+    //================================//
+    //This function for create product//
+    //================================//
+    public void createProdcutItem(String productId, String name, String category,
+                                    double price, int stock, boolean available) {
+        if (!requireStaffLogin() || !requirePermission(CREATE_PRODUCT_ITEM)) return;
+
+        if (isBlank(productId)) {
+            setLastMessage("Cannot create product: productId is empty.");
+            return;
+        }
+        //prevent duplicate productId
+        for (int i = 0; i < productItems.size(); i++) {
+            if (productItems.get(i).getProductId().equalsIgnoreCase(productId.trim())) {
+                setLastMessage("Cannot create product: productId already exists.");
+                return;
+            }
+        }
+        productItems.add(new Products(productId, name, category, price, stock, available));
+        setLastMessage("Product created successfully.");
+    }
     
-    
+    // SET AVAILABILITY
+    public void setProductAvailability(String productId, boolean available) {
+        if (!requireStaffLogin()) return;
+
+        Products product = findProductById(productId);
+        if (product == null) {
+            setLastMessage("Product not found.");
+            return;
+        }
+        product.setAvailable(available);
+        setLastMessage("Product availability updated.");
+    }
+
+    // HELPER
+    private Products findProductById(String productId) {
+        if (isBlank(productId)) return null;
+        for (int i = 0; i < productItems.size(); i++) {
+            if (productItems.get(i).getProductId().equalsIgnoreCase(productId.trim())) {
+                return productItems.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void printCustomers() {
+        System.out.println("\n--- Customers (" + customers.size() + ") ---");
+        if (customers.size() == 0) System.out.println("No customers.");
+        for (int i = 0; i < customers.size(); i++) {
+            System.out.println((i + 1) + ") " + customers.get(i));
+        }
+    }
+
+    public void printProductItems() {
+        System.out.println("\n--- Products (" + productItems.size() + ") ---");
+        if (productItems.size() == 0) System.out.println("No products.");
+        for (int i = 0; i < productItems.size(); i++) {
+            System.out.println((i + 1) + ") " + productItems.get(i));
+        }
+    }
+
+    private boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+
+
+    @Override
+    public String toString() {
+        return "SkincareShop{" +
+                "shopName='" + shopName + '\'' +
+                ", address='" + address + '\'' +
+                ", staffs=" + staffs +
+                ", customers=" + customers +
+                ", productItems=" + productItems +
+                ", loggedInStaff=" + loggedInStaff +
+                '}';
+    }
 }
