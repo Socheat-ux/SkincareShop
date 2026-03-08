@@ -12,15 +12,18 @@ public class Customer {
         setCustomerId(customerId);
         setFullName(fullName);
         setPhone(phone);
-        this.password = password;
-        this.balance = balance;
+        setPassword(password);
+        setBalance(balance);
     }                
 
     public String getCustomerId() { return customerId; }
     public String getFullName() { return fullName; }
     public String getPhone() { return phone; }
-    public String getPassword() { return password; }
     public double getBalance() { return balance; }
+
+    public boolean checkPassword(String input) {
+        return password != null && password.equals(input);
+    }
 
     public void setCustomerId(String customerId) {
         if (isBlank(customerId)) {
@@ -37,16 +40,36 @@ public class Customer {
     }
 
    public void setPhone(String phone) {
-        if (isBlank(phone)) {
+        String p = isBlank(phone) ? "" : phone.trim();
+        if (!isDigits(p) || p.length() < 8 || p.length() > 15) {
             this.phone = "00000000";
         } else {
-            this.phone = phone.trim();
+            this.phone = p;
         }
+    }
+
+    private boolean isDigits(String s) {
+        if (isBlank(s)) return false;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) < '0' || s.charAt(i) > '9') return false;
+        }
+        return true;
+    }
+
+    public void setPassword(String password) {
+        String pw = (password == null) ? "" : password;
+        if (pw.length() < 4) this.password = "0000";
+        else this.password = pw;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance < 0 ? 0 : balance;
     }
 
     private boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
     }
+
 
   
     @Override
