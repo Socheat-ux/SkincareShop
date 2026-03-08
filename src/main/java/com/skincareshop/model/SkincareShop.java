@@ -158,7 +158,7 @@ public class SkincareShop {
     }
 
     //=================================//
-    //This function for create customer//
+    //This function for create customer (Hanlde by Staff)//
     //=================================//
     public void createCustomer(String customerId, String fullName, String phone, 
                                 String password, double balance ) {
@@ -184,7 +184,7 @@ public class SkincareShop {
     }
 
     //================================//
-    //This function for create product//
+    //This function for create product (Handle by Staff)//
     //================================//
     public void createProdcutItem(String productId, String name, String category,
                                     double price, int stock, boolean available) {
@@ -253,12 +253,12 @@ public class SkincareShop {
     @Override
     public String toString() {
         return "SkincareShop{" +
-                "shopName='" + shopName + '\'' +
-                ", address='" + address + '\'' +
-                ", staffs=" + staffs +
-                ", customers=" + customers +
-                ", productItems=" + productItems +
-                ", loggedInStaff=" + loggedInStaff +
+                "\nshopName='" + shopName + '\'' +
+                "\naddress='" + address + '\'' +
+                "\nstaffs=" + staffs +
+                "\ncustomers=" + customers +
+                "\nproductItems=" + productItems +
+                "\nloggedInStaff=" + loggedInStaff +
                 '}';
     }
 }

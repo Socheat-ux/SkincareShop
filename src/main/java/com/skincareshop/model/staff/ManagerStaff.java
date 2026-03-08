@@ -25,7 +25,7 @@ public class ManagerStaff extends Staff{
 
     @Override
     public String toString() {
-        return super.toString()+"ManagerStaff [\"Position: Manager salary=" + salary + "]";
+        return super.toString()+"\nManagerStaff [\"Position: Manager salary=" + salary + "]";
     }
 
     @Override

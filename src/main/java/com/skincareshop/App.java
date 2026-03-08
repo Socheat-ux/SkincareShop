@@ -1,7 +1,11 @@
 package com.skincareshop;
 
+import java.util.Scanner;
+
+import com.skincareshop.model.SkincareShop;
 import com.skincareshop.model.other.Products;
 import com.skincareshop.model.other.ProductsItem;
+import com.skincareshop.model.staff.Staff;
 import com.skincareshop.service.CartService;
 
 public class App 
@@ -25,5 +29,25 @@ public class App
         // Update
         cart.updateQuantityProductsItem(0, 1);
         cart.printInfo();
+
+        Scanner sc = new Scanner(System.in);
+
+        SkincareShop shop = new SkincareShop("Blossom", "Phnom Penh");
+
+        shop.createStaff("S001", "Admin", "010000000", "admin", "1004","Manager");
+        shop.createStaff("S002", "Cashier", "010000000", "Cashier", "1009", "Cashier");
+
+        
+        System.out.println(shop);
+       
+        // create staff
+        Staff s1 = new Staff("S001", "Admin", "010000000", "admin", "1234");
+        Staff s2 = new Staff("S002", "Barista", "010000000", "barista", "1234");
+        System.out.println(s1);
+        System.out.println(s2);
+
+
+        sc.close();
+    
     }
 }
