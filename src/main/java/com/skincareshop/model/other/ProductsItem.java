@@ -1,22 +1,20 @@
 package com.skincareshop.model.other;
 
 public class ProductsItem {
-    private String name;
-    private double price;
+    Products product;
     private int quantity;
 
     //constuctor
-    public ProductsItem(String name, double price, int quantity){
-        setName(name);
-        setPrice(price);
+    public ProductsItem(Products product, int quantity){
+        setProduct(product);
         setQuantity(quantity);
     }
 
-    public void setName(String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Product don't have a name yet!");
+    public void setProduct(Products product){
+        if(product == null){
+            throw new IllegalArgumentException("Product cannot be null!");
         }
-        this.name = name;
+        this.product = product;
     }
 
     public void setQuantity(int quantity) {
@@ -26,19 +24,12 @@ public class ProductsItem {
         this.quantity = quantity;
     }
 
-    public void setPrice(double price) {
-        if(price < 0.9) {
-            throw new IllegalArgumentException("Price cannot lower than 0.9!");
-        }
-        this.price = price;
+    public void increaseQuantity(int quantity) {
+        setQuantity(this.quantity + quantity);
     }
 
-    public String getName() {
-        return name;
-    }
-    
-    public double getPrice() {
-        return price;
+    public Products getProduct() {
+        return product;
     }
 
     public int getQuantity() {
@@ -46,13 +37,13 @@ public class ProductsItem {
     }
 
     public double getTotalPrice(){
-        return quantity * getPrice();
+        return quantity * product.getPrice();
     }
 
 
     @Override
     public String toString() {
-        return getName() + " " + getQuantity() + " ($" + getTotalPrice() + ")";
+        return product.getName() + " " + quantity + " ($" + getTotalPrice() + ")";
     }
 }
 

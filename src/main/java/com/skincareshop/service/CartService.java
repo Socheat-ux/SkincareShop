@@ -2,6 +2,7 @@ package com.skincareshop.service;
 
 import java.util.ArrayList;
 
+import com.skincareshop.model.other.Products;
 import com.skincareshop.model.other.ProductsItem;
 
 public class CartService {
@@ -11,9 +12,20 @@ public class CartService {
         cart =  new ArrayList<>();
     }
 
-    public void addProductsItem(String name, double price, int quantity){
-        cart.add(new ProductsItem(name, price, quantity));
+    public void addProductsItem(Products product, int quantity){
+        for (ProductsItem item : cart) {
+            if (item.getProduct().equals(product)) { // compare by reference or ID
+                item.increaseQuantity(quantity);
+                return;
+            }
+        }
 
+        if(quantity > product.getStock()){
+            throw new IllegalArgumentException("Not enough stock available!");
+        }
+        product.reduceStock(quantity);
+
+        cart.add(new ProductsItem(product, quantity));
     }
 
      public double getTotalPrice(){

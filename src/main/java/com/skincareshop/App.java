@@ -1,5 +1,6 @@
 package com.skincareshop;
 
+import com.skincareshop.model.other.Products;
 import com.skincareshop.model.other.ProductsItem;
 import com.skincareshop.service.CartService;
 
@@ -7,15 +8,15 @@ public class App
 {
     public static void main( String[] args )
     {
-
-        ProductsItem i1 = new ProductsItem("Serum", 7.8, 2);
-        ProductsItem i2 = new ProductsItem("Cream", 12, 5);
-        ProductsItem i3 = new ProductsItem("Sunscreen", 8.5, 10);   
+        Products serum = new Products("Serum", 12.50, 10);
+        Products moisturizer = new Products("Moisturizer", 6.69, 12);
+        Products cleanser = new Products("Cleanser", 8.50, 8);
+        System.err.println(serum);
 
         CartService cart = new CartService();
-        cart.addProductsItem("Serum", 7.8, 2);
-        cart.addProductsItem("Cream", 12, 4);
-        cart.addProductsItem("Sunscreen", 8.5, 1);
+        cart.addProductsItem(serum, 2);
+        cart.addProductsItem(moisturizer, 1);
+        cart.addProductsItem(cleanser, 3);
 
         // Remove
         cart.removeProductsItem(0);
