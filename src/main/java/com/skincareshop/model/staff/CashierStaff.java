@@ -12,11 +12,6 @@ public class CashierStaff extends Staff {
         this.setSalary(salary);
     }
 
-    // Overloaded — takes base salary + bonus
-    public void setSalary(float baseSalary, float bonus) {
-        setSalary(baseSalary + bonus);
-    }
-
     @Override
     public boolean can(String action) {
         if (action.equals(SkincareShop.CREATE_ORDER) || action.equals(SkincareShop.CREATE_CUSTOMER)
@@ -57,8 +52,6 @@ public class CashierStaff extends Staff {
                 ", salary=" + salary +
                 '}';
     }
-
-
    
 
 }
