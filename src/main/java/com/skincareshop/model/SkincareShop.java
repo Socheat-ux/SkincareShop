@@ -2,6 +2,8 @@ package com.skincareshop.model;
 
 import java.util.ArrayList;
 
+import com.skincareshop.model.other.Customer;
+import com.skincareshop.model.other.Products;
 import com.skincareshop.model.staff.IStaff;
 import com.skincareshop.model.staff.ManagerStaff;
 import com.skincareshop.model.staff.Staff;
@@ -10,39 +12,54 @@ public class SkincareShop {
 
     public static final String CREATE_STAFF = "CREATE_STAFF";
     public static final String CREATE_CUSTOMER = "CREATE_CUSTOMER";
-    public static final String CREATE_MENU_ITEM = "CREATE_MENU_ITEM";
-    public static final String SET_MENU_AVAILABLITY = "SET_MENU_AVAILABLITY";
+    public static final String CREATE_MENU_ITEM = "CREATE_PRODUCT_ITEM";
+    public static final String SET_MENU_AVAILABLITY = "SET_PRODUCT_AVAILABLITY";
     public static final String CREATE_ORDER = "CREATE_ORDER";
     public static final String VIEW_CUSTOMER = "VIEW_CUSTOMER";
     public static final String VIEW_ORDER = "VIEW_ORDER";
 
     private String shopName;
     private String address;
+    private Strig lastMessage;
     
-    private ArrayList<IStaff> staffs;
+    private ArrayList<Staff> staffs;
+    private ArrayList<Customer> customers;
+    private ArrayList<Products> productItems;
+    private Staff loggedInStaff;
 
     public SkincareShop(String shopName, String address) {
-        staffs = new ArrayList<>();
+        setShopName(shopName);
+        setAddress(address);
 
+        staffs = new ArrayList<>();
+        customers = new ArrayList<>();
+        productItems = new ArrayList<>();
+
+        loggedInStaff = null;
         seedDefaultAdmin();
+
+        lastMessage = "SkincareShop created. Default staff: admin / 1122";
     }
     
     public String getShopName() { return shopName; }
     public String getAddress() { return address; }
+    public Strig getLastMessage() { return lastMessage; }
 
     public void setShopName(String shopName) {
-        if (shopName.isBlank()) {
+        if (isBlank(shopName)) {
             this.shopName = "SkincareShop";
         }
         else this.shopName = shopName.trim();     
     }
 
     public void setAddress(String address) {
-        if (address.isBlank()) {
+        if (isBlank(address)) {
             this.address = "Phnom Penh";
         }
         else this.address = address.trim();
     }
+
+    private void setLastMessage(String msg) { lastMessage = msg; }
 
     private void seedDefaultAdmin() {
         Staff s1 = new Staff("S001", "Admin", "010000000", "admin", "1234");
@@ -50,4 +67,21 @@ public class SkincareShop {
         staffs.add(admin);
     }
 
+    //Function for require staff to login
+    private boolean requireStaffLogin() {
+        if (loggedInStaff == null) {
+            setLastMessage("Action Denied! Staff must login first!");
+            return false;
+        }
+        if (!loggedInStaff.isActive()) {
+            loggedInStaff = null;
+            setLastMessage("Staff is inactive!");
+            return false;
+        }
+        return true;
+    }
+
+    //This function checks if the currently logged-in staff has permission to do a specific action.
+    
+    
 }
