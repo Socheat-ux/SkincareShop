@@ -32,11 +32,6 @@ public class CashierStaff extends Staff {
         }
     }
 
-    // Overloaded — takes base salary + bonus
-    public void setSalary(float baseSalary, float bonus) {
-        setSalary(baseSalary + bonus);
-    }
-
     @Override
     public boolean equals(Object obj) {
         CashierStaff other = (CashierStaff) obj;
@@ -51,6 +46,8 @@ public class CashierStaff extends Staff {
         return true;
     }
 
+
+    d
     @Override
     public String toString() {
         return super.toString() + 
@@ -60,5 +57,5 @@ public class CashierStaff extends Staff {
 
 
 
-    
+
 }
