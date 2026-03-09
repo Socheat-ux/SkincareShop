@@ -24,7 +24,7 @@ public class CashierStaff extends Staff {
     public float getSalary() { return salary; }
 
     public void setSalary(float salary) {
-        if (salary < 800) {
+        if (salary < 400) {
             throw new IllegalArgumentException("ERROR!");
         }
         else {
