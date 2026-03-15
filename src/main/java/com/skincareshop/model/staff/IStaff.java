@@ -8,6 +8,6 @@ public interface IStaff {
     String getPosition();
     boolean isActive();
     boolean checkPassword(String password);
-    boolean can(String action);
+    public abstract boolean can(String action);
 
 }

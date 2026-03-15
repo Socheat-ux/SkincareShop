@@ -1,6 +1,6 @@
 package com.skincareshop.model.staff;
 
-public class Staff implements IStaff{
+public abstract class Staff implements IStaff{
 
     private String staffId;
     private String fullName;
@@ -12,10 +12,7 @@ public class Staff implements IStaff{
 
 
     @Override
-    public boolean can(String action) {
-        return false;
-    }
-
+    public abstract boolean can(String action);
 
     // constructor
     public Staff(String staffId, String fullName, String phone,
