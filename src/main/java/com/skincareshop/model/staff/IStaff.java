@@ -9,5 +9,6 @@ public interface IStaff {
     boolean isActive();
     boolean checkPassword(String password);
     public abstract boolean can(String action);
+    
 
 }

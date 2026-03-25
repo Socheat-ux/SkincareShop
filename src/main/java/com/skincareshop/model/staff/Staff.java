@@ -111,12 +111,10 @@ public abstract class Staff implements IStaff{
 
     @Override
     public boolean equals(Object obj) {
-        Staff s1 = (Staff) obj;
-        if(s1.phone.equals(phone))
-        {
-            return true;
-        }
-        return false;
+        if (this == obj) return true;
+        if (!(obj instanceof Staff)) return false;
+        Staff other = (Staff) obj;
+        return this.phone.equals(other.phone);
     }
   
 }

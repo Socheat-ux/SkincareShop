@@ -17,10 +17,9 @@ public class ManagerStaff extends Staff{
         if(salary < 800)
         {
             System.out.println("error: need more salary");
-        }else
-        {
-            this.salary = salary;
         }
+        this.salary = salary;
+        
     }
 
     @Override
@@ -35,16 +34,12 @@ public class ManagerStaff extends Staff{
 
     @Override
     public boolean equals(Object obj) {  
+        if (this == obj) return true;
+        if (!(obj instanceof ManagerStaff)) return false;
+
         ManagerStaff other = (ManagerStaff) obj;
-        if (!super.equals(obj)) {
-            return false;
-        }
-        else {
-            if (Float.floatToIntBits(salary) != Float.floatToIntBits(other.salary)) {
-                return false;
-            }
-        }
-        return true;
+        if (!super.equals(obj)) return false;
+        return Float.compare(this.salary, other.salary) == 0;
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.skincareshop.model.other.Customer;
 import com.skincareshop.model.other.Products;
+import com.skincareshop.model.other.ProductsItem;
 import com.skincareshop.model.staff.ManagerStaff;
 import com.skincareshop.model.staff.CashierStaff;
 import com.skincareshop.model.staff.Staff;
@@ -62,9 +63,7 @@ public class SkincareShop {
     private void setLastMessage(String msg) { lastMessage = msg; }
 
     private void seedDefaultAdmin() {
-        Staff s1 = new Staff("S001", "Admin", "010000000", "admin", "1234");
-        ManagerStaff admin = new ManagerStaff(s1, 2000);
-        staffs.add(admin);
+        staffs.add(new ManagerStaff("S001", "Admin", "010000000", "admin", "1234", 2000));
     }
 
     //Function for require staff to login
@@ -145,11 +144,11 @@ public class SkincareShop {
         }
         //check position
         if (position.equals("Manager")) {
-            staffs.add(new ManagerStaff(new Staff(staffId, fullName, phone, username, password), 2000));
+            staffs.add(new ManagerStaff(staffId, fullName, phone, username, password, 2000));
             setLastMessage("Manager created successfully.");
         }
         else if (position.equals("Cashier")) {
-            staffs.add(new CashierStaff(new Staff(staffId, fullName, phone, username, password), 1000));
+            staffs.add(new CashierStaff(staffId, fullName, phone, username, password, 1000));
             setLastMessage("Cashier created successfully.");
         }
         else {
@@ -204,6 +203,38 @@ public class SkincareShop {
         productItems.add(new Products(productId, name, category, price, stock, available));
         setLastMessage("Product created successfully.");
     }
+
+    public void createOrder(String customerPhone, String itemId, int qty) {
+
+        if (!requireStaffLogin()) return;
+
+        if (isBlank(customerPhone) || isBlank(itemId) || qty <= 0) {
+            setLastMessage("Cannot create order: invalid input.");
+            return;
+        }
+
+        Products item = findProductById(itemId);
+        if (item == null) {
+            setLastMessage("Cannot create order: menu item not found.");
+            return;
+        }
+        if (!item.isAvailable()) {
+            setLastMessage("Cannot create order: menu item is not available.");
+            return;
+        }
+
+        double total = item.getPrice() * qty;
+
+        // if (!customer.deductBalance(total)) {
+        //     setLastMessage("Cannot create order: insufficient balance.");
+        //     return;
+        // }
+
+        // String orderId = "ORD" + (orders.size() + 1);
+        // orders.add(new Order(orderId, customer, item, qty, loggedInStaff));
+
+        // setLastMessage("Order created successfully: " + orderId);
+    }
     
     // SET AVAILABILITY
     public void setProductAvailability(String productId, boolean available) {
@@ -229,7 +260,26 @@ public class SkincareShop {
         return null;
     }
 
+    private Products findProductByIdInternal(String productId) {
+        if (isBlank(productId)) return null;
+        for (Products p : productItems) {
+            if (p.getProductId().equalsIgnoreCase(productId.trim())) return p;
+        }
+        return null;
+    }
+
+    public void printOrders() {
+        if (!requireStaffLogin() || !requirePermission(VIEW_ORDER)) return;
+        System.out.println("\n--- Orders (" + orders.size() + ") ---");
+        if (orders.isEmpty()) { System.out.println("  No orders yet."); return; }
+        for (int i = 0; i < orders.size(); i++) {
+            System.out.println("  " + (i + 1) + ") " + orders.get(i));
+        }
+    }
+
     public void printCustomers() {
+        if (!requireStaffLogin() || !requirePermission(VIEW_ORDER)) return;
+
         System.out.println("\n--- Customers (" + customers.size() + ") ---");
         if (customers.size() == 0) System.out.println("No customers.");
         for (int i = 0; i < customers.size(); i++) {
@@ -238,6 +288,8 @@ public class SkincareShop {
     }
 
     public void printProductItems() {
+        if (!requireStaffLogin()) return;
+
         System.out.println("\n--- Products (" + productItems.size() + ") ---");
         if (productItems.size() == 0) System.out.println("No products.");
         for (int i = 0; i < productItems.size(); i++) {

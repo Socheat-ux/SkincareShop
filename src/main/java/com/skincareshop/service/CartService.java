@@ -12,6 +12,18 @@ public class CartService {
         cart =  new ArrayList<>();
     }
 
+    public ArrayList<ProductsItem> getItems() {
+        return new ArrayList<>(cart);  
+    }
+ 
+    public int size() {
+        return cart.size();
+    }
+ 
+    public void clearCart() {
+        cart.clear();
+    }
+
     public void addProductsItem(Products product, int quantity){
         for (ProductsItem item : cart) {
             if (item.getProduct().equals(product)) {
@@ -52,17 +64,17 @@ public class CartService {
         cart.get(index).setQuantity(quantity);
     }
 
-    public void printInfo(){
-        if(cart.size() == 0) {
-            System.out.println("No order yet!");
+    public void printInfo() {
+        if (cart.size() == 0) {
+            System.out.println("Cart is empty.");
+            return;  
         }
-        System.out.println("-------------Print Info-------------");
-        for (ProductsItem productsItem : cart) {
-            System.out.println(productsItem);
+        System.out.println("-----Order-----");
+        for (ProductsItem item : cart) {
+            System.out.println("  " + item);
         }
-        System.out.println("------------------------------------");
-        System.out.println("\tGrand Total: $" + getTotalPrice());
-
+        System.out.println("------------------------------");
+        System.out.printf("  Grand Total: $%.2f%n", getTotalPrice());
     }
 
 }

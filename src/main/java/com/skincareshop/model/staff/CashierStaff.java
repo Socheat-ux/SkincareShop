@@ -7,8 +7,8 @@ public class CashierStaff extends Staff {
     private float salary;
 
     public CashierStaff(Staff S1, float salary) {
-        super(S1.getStaffId(), S1.getFullName(), S1.getUsername(), 
-        S1.getPhone(), S1.getPassword());
+        super(S1.getStaffId(), S1.getFullName(), S1.getPhone(), S1.getUsername(), 
+        S1.getPassword());
         this.setSalary(salary);
     }
 
@@ -27,9 +27,8 @@ public class CashierStaff extends Staff {
         if (salary < 400) {
             throw new IllegalArgumentException("ERROR!");
         }
-        else {
-            this.salary = salary;
-        }
+        this.salary = salary;
+        
     }
 
     // Overloaded — takes base salary + bonus
@@ -39,16 +38,12 @@ public class CashierStaff extends Staff {
 
     @Override
     public boolean equals(Object obj) {
-        CashierStaff other = (CashierStaff) obj;
+        if (this == obj) return true;
+        if (!(obj instanceof CashierStaff)) return false;
 
-        if(!super.equals(obj)) {
-            return false;
-        }
-        else {
-            if (Float.floatToIntBits(salary) != Float.floatToIntBits(other.salary))
-            return false;
-        }
-        return true;
+        CashierStaff other = (CashierStaff) obj;
+        if (!super.equals(obj)) return false;
+        return Float.compare(this.salary, other.salary) == 0;
     }
 
 
