@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.skincareshop.model.other.Customer;
 import com.skincareshop.model.other.Products;
+import com.skincareshop.model.other.Order;
 import com.skincareshop.model.staff.ManagerStaff;
 import com.skincareshop.model.staff.CashierStaff;
 import com.skincareshop.model.staff.Staff;
@@ -24,6 +25,7 @@ public class SkincareShop {
     
     private ArrayList<Staff> staffs;
     private ArrayList<Customer> customers;
+    private ArrayList<Order> orders;
     private ArrayList<Products> productItems;
     private Staff loggedInStaff;
 
@@ -33,6 +35,7 @@ public class SkincareShop {
 
         staffs = new ArrayList<>();
         customers = new ArrayList<>();
+        orders = new ArrayList<>();
         productItems = new ArrayList<>();
 
         loggedInStaff = null;
@@ -215,23 +218,71 @@ public class SkincareShop {
     }
 
     public void createOrder(String customerPhone, String itemId, int qty) {
-
-        if (!requireStaffLogin()) return;
-
+        if (!requireStaffLogin() || !requirePermission(CREATE_ORDER)) return; // FIX: added permission check
+ 
         if (isBlank(customerPhone) || isBlank(itemId) || qty <= 0) {
             setLastMessage("Cannot create order: invalid input.");
             return;
         }
-
+ 
+        // FIX: find customer by phone
+        Customer customer = findCustomerByPhone(customerPhone);
+        if (customer == null) {
+            setLastMessage("Cannot create order: customer not found.");
+            return;
+        }
+ 
         Products item = findProductById(itemId);
         if (item == null) {
-            setLastMessage("Cannot create order: menu item not found.");
+            setLastMessage("Cannot create order: product not found.");
             return;
         }
         if (!item.isAvailable()) {
-            setLastMessage("Cannot create order: menu item is not available.");
+            setLastMessage("Cannot create order: product is not available.");
             return;
         }
+ 
+        // check sufficient stock (Products has reduceStock() which also validates)
+        if (item.getStock() < qty) {
+            setLastMessage("Cannot create order: insufficient stock.");
+            return;
+        }
+ 
+        double total = item.getPrice() * qty;
+ 
+        // check customer has enough balance
+        if (customer.getBalance() < total) {
+            setLastMessage("Cannot create order: insufficient balance.");
+            return;
+        }
+ 
+        // deduct balance and reduce stock using existing methods
+        customer.setBalance(customer.getBalance() - total);
+        item.reduceStock(qty);  // uses Products.reduceStock() which already exists
+ 
+        String orderId = "ORD" + (orders.size() + 1);
+        orders.add(new Order(orderId, customer, item, qty, loggedInStaff));
+        setLastMessage("Order created successfully: " + orderId);
+    }
+
+    // public void createOrder(String customerPhone, String itemId, int qty) {
+
+    //     if (!requireStaffLogin()) return;
+
+    //     if (isBlank(customerPhone) || isBlank(itemId) || qty <= 0) {
+    //         setLastMessage("Cannot create order: invalid input.");
+    //         return;
+    //     }
+
+    //     Products item = findProductById(itemId);
+    //     if (item == null) {
+    //         setLastMessage("Cannot create order: menu item not found.");
+    //         return;
+    //     }
+    //     if (!item.isAvailable()) {
+    //         setLastMessage("Cannot create order: menu item is not available.");
+    //         return;
+    //     }
 
         // if (!customer.deductBalance(total)) {
         //     setLastMessage("Cannot create order: insufficient balance.");
@@ -242,7 +293,7 @@ public class SkincareShop {
         // orders.add(new Order(orderId, customer, item, qty, loggedInStaff));
 
         // setLastMessage("Order created successfully: " + orderId);
-    }
+    //}
     
     // SET AVAILABILITY
     public void setProductAvailability(String productId, boolean available) {
@@ -268,6 +319,18 @@ public class SkincareShop {
         return null;
     }
 
+    // ======================== //
+    //       PRINT METHODS      //
+    // ======================== //
+    public void printOrders() {
+        if (!requireStaffLogin() || !requirePermission(VIEW_ORDER)) return;
+        System.out.println("\n--- Orders (" + orders.size() + ") ---");
+        if (orders.isEmpty()) { System.out.println("  No orders yet."); return; }
+        for (int i = 0; i < orders.size(); i++) {
+            System.out.println("  " + (i + 1) + ") " + orders.get(i));
+        }
+    }
+
     public void printCustomers() {
         if (!requireStaffLogin() || !requirePermission(VIEW_ORDER)) return;
 
@@ -287,6 +350,17 @@ public class SkincareShop {
             System.out.println((i + 1) + ") " + productItems.get(i));
         }
     }
+
+    private Customer findCustomerByPhone(String phone) {
+            if (isBlank(phone)) return null;
+            for (int i = 0; i < customers.size(); i++) {
+                if (customers.get(i).getPhone().equals(phone.trim())) {
+                    return customers.get(i);
+                }
+            }
+            return null;
+        }
+
 
     private boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
