@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.skincareshop.model.other.Customer;
 import com.skincareshop.model.other.Products;
-import com.skincareshop.model.other.ProductsItem;
 import com.skincareshop.model.staff.ManagerStaff;
 import com.skincareshop.model.staff.CashierStaff;
 import com.skincareshop.model.staff.Staff;
@@ -223,8 +222,6 @@ public class SkincareShop {
             return;
         }
 
-        double total = item.getPrice() * qty;
-
         // if (!customer.deductBalance(total)) {
         //     setLastMessage("Cannot create order: insufficient balance.");
         //     return;
@@ -258,23 +255,6 @@ public class SkincareShop {
             }
         }
         return null;
-    }
-
-    private Products findProductByIdInternal(String productId) {
-        if (isBlank(productId)) return null;
-        for (Products p : productItems) {
-            if (p.getProductId().equalsIgnoreCase(productId.trim())) return p;
-        }
-        return null;
-    }
-
-    public void printOrders() {
-        if (!requireStaffLogin() || !requirePermission(VIEW_ORDER)) return;
-        System.out.println("\n--- Orders (" + orders.size() + ") ---");
-        if (orders.isEmpty()) { System.out.println("  No orders yet."); return; }
-        for (int i = 0; i < orders.size(); i++) {
-            System.out.println("  " + (i + 1) + ") " + orders.get(i));
-        }
     }
 
     public void printCustomers() {
