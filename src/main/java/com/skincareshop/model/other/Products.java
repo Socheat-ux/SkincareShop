@@ -54,6 +54,12 @@ public class Products {
         stock -= quantity;
     }
 
+    public void increaseStock(int quantity) {
+        if (quantity > 0) {
+            stock += quantity;
+        }
+    }
+
     public void setAvailable(boolean available) {
         this.available = available;
     }

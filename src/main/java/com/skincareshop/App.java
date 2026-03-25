@@ -3,47 +3,20 @@ package com.skincareshop;
 import java.util.Scanner;
 
 import com.skincareshop.model.SkincareShop;
-import com.skincareshop.model.other.Products;
-import com.skincareshop.model.other.ProductsItem;
-import com.skincareshop.model.staff.Staff;
-import com.skincareshop.service.CartService;
 import com.skincareshop.model.staff.ManagerStaff;
-import com.skincareshop.model.staff.CashierStaff;
+import com.skincareshop.model.staff.Staff;
 
-public class App 
-{
+public class App {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-
-        SkincareShop shop = new SkincareShop("Blosoom", "Phnom Penh");
-
-        shop.createStaff(null, null, null, null, null, null);
-
-        System.out.println(shop);
-
-        Object o1 = new Object();
-        Staff s1 = new Staff("S001", "Admin", "010000000", "admin", "1234");
-        
-        s1.equals(o1);
-
-        //create staff
-        // Staff s1 = new Staff("S001", "Admin", "010000000", "admin", "1234");
-        // Staff s2 = new Staff("S002", "Barista", "010000000", "barista", "1234");
-        // // System.out.println(s1);
-        // // System.out.println(s2);
-
-        ManagerStaff m1 = new ManagerStaff(s1, 2000);
-        
-        // m1.can("CREATE_CUSTOMER");
-        System.out.println(m1.can("CREATE_CUSTOMER"));
-        System.out.println(s1.can("CREATE_CUSTOMER"));
-        
+        SkincareShop shop = new SkincareShop("Blossom", "Phnom Penh");
+  
         int choice;
 
         do {
 
-            if (!shop.isStaffLoggedIn()) {
+            if (shop.getLoggedInStaff() == null) {
 
                 printMainMenu();
 
@@ -53,7 +26,7 @@ public class App
 
                 switch (choice) {
 
-                    case 1: {
+                    case 1: { // LOGIN
                         System.out.print("Username: ");
                         String username = sc.nextLine();
 
@@ -65,15 +38,14 @@ public class App
                         break;
                     }
 
-                    case 2: {
-                        shop.printMenuItems();
+                    case 2: { // VIEW PRODUCTS
+                        shop.printProductItems();
                         break;
                     }
 
-                    case 0: {
+                    case 0:
                         System.out.println("Goodbye!");
                         break;
-                    }
 
                     default:
                         System.out.println("Invalid choice.");
@@ -89,7 +61,7 @@ public class App
 
                 switch (choice) {
 
-                    case 1: { // Create Staff
+                    case 1: { // CREATE STAFF
                         System.out.print("Staff ID: ");
                         String staffId = sc.nextLine();
 
@@ -105,7 +77,7 @@ public class App
                         System.out.print("Password: ");
                         String password = sc.nextLine();
 
-                        System.out.print("Position: ");
+                        System.out.print("Position (Manager/Cashier): ");
                         String position = sc.nextLine();
 
                         shop.createStaff(staffId, fullName, phone, username, password, position);
@@ -113,7 +85,7 @@ public class App
                         break;
                     }
 
-                    case 2: { // Create Customer
+                    case 2: { // CREATE CUSTOMER
                         System.out.print("Customer ID: ");
                         String customerId = sc.nextLine();
 
@@ -126,7 +98,7 @@ public class App
                         System.out.print("Password: ");
                         String password = sc.nextLine();
 
-                        System.out.print("Initial Balance: ");
+                        System.out.print("Balance: ");
                         double balance = sc.nextDouble();
                         sc.nextLine();
 
@@ -135,22 +107,21 @@ public class App
                         break;
                     }
 
-                    case 3: { // Create Menu Item
-                        System.out.print("Item ID: ");
-                        String itemId = sc.nextLine();
+                    case 3: { // CREATE PRODUCT
+                        System.out.print("Product ID: ");
+                        String productId = sc.nextLine();
 
-                        System.out.print("Item Name: ");
+                        System.out.print("Name: ");
                         String name = sc.nextLine();
 
                         System.out.print("Category: ");
                         String category = sc.nextLine();
 
-                        System.out.print("Size (S/M/L/None): ");
-                        String size = sc.nextLine();
-
                         System.out.print("Price: ");
                         double price = sc.nextDouble();
-                        sc.nextLine();
+
+                        System.out.print("Stock: ");
+                        int stock = sc.nextInt();
 
                         System.out.print("Available? (1=Yes, 0=No): ");
                         int a = sc.nextInt();
@@ -158,14 +129,14 @@ public class App
 
                         boolean available = (a == 1);
 
-                        shop.createMenuItem(itemId, name, category, size, price, available);
+                        shop.createProductItem(productId, name, category, price, stock, available);
                         System.out.println(shop.getLastMessage());
                         break;
                     }
 
-                    case 4: { // Set Menu Item Availability
-                        System.out.print("Item ID: ");
-                        String itemId = sc.nextLine();
+                    case 4: { // SET PRODUCT AVAILABILITY
+                        System.out.print("Product ID: ");
+                        String productId = sc.nextLine();
 
                         System.out.print("Available? (1=Yes, 0=No): ");
                         int a = sc.nextInt();
@@ -173,52 +144,64 @@ public class App
 
                         boolean available = (a == 1);
 
-                        shop.setMenuItemAvailability(itemId, available);
+                        shop.setProductAvailability(productId, available);
                         System.out.println(shop.getLastMessage());
                         break;
                     }
 
-                    case 5: { // Create Order
-                        System.out.print("Customer phone: ");
-                        String phone = sc.nextLine();
+                    case 5: { // ADD TO CART
+                        shop.printProductItems();
 
-                        System.out.print("Menu item ID: ");
-                        String itemId = sc.nextLine();
+                        System.out.print("Product ID: ");
+                        String productId = sc.nextLine();
 
                         System.out.print("Quantity: ");
                         int qty = sc.nextInt();
                         sc.nextLine();
 
-                        shop.createOrder(phone, itemId, qty);
+                        shop.addToCart(productId, qty);
                         System.out.println(shop.getLastMessage());
                         break;
                     }
 
-                    case 6: { // List Customers
+                    case 6: { // VIEW CART
+                        shop.viewCart();
+                        break;
+                    }
+
+                    case 7: { // CHECKOUT
+                        System.out.print("Customer phone: ");
+                        String phone = sc.nextLine();
+
+                        shop.checkout(phone);
+                        System.out.println(shop.getLastMessage());
+                        break;
+                    }
+
+                    case 8: { // LIST CUSTOMERS
                         shop.printCustomers();
                         break;
                     }
 
-                    case 7: { // List Menu Items
-                        shop.printMenuItems();
+                    case 9: { // LIST PRODUCTS
+                        shop.printProductItems();
                         break;
                     }
 
-                    case 8: { // List Orders
+                    case 10: { // LIST ORDERS
                         shop.printOrders();
                         break;
                     }
 
-                    case 9: { // Logout
+                    case 11: { // LOGOUT
                         shop.staffLogout();
                         System.out.println(shop.getLastMessage());
                         break;
                     }
 
-                    case 0: {
+                    case 0:
                         System.out.println("Goodbye!");
                         break;
-                    }
 
                     default:
                         System.out.println("Invalid choice.");
@@ -230,26 +213,29 @@ public class App
         sc.close();
     }
 
-    // ===== Menu printing in Main (easy to customize later) =====
+
+    // ===== MENUS =====
     private static void printMainMenu() {
         System.out.println("\n=== MAIN MENU (Not Logged In) ===");
         System.out.println("1) Staff Login");
-        System.out.println("2) View Menu Items");
+        System.out.println("2) View Products");
         System.out.println("0) Exit");
     }
 
     private static void printStaffMenu(SkincareShop shop) {
         System.out.println("\n=== STAFF MENU (Logged In) ===");
-        System.out.println("Logged in staff: " + shop.getLoggedInStaff());
+        System.out.println("Logged in: " + shop.getLoggedInStaff());
         System.out.println("1) Create Staff");
         System.out.println("2) Create Customer");
-        System.out.println("3) Create Menu Item");
-        System.out.println("4) Set Menu Item Availability");
-        System.out.println("5) Create Order");
-        System.out.println("6) List Customers");
-        System.out.println("7) List Menu Items");
-        System.out.println("8) List Orders");
-        System.out.println("9) Logout");
+        System.out.println("3) Create Product");
+        System.out.println("4) Set Product Availability");
+        System.out.println("5) Add to Cart");
+        System.out.println("6) View Cart");
+        System.out.println("7) Checkout");
+        System.out.println("8) List Customers");
+        System.out.println("9) List Products");
+        System.out.println("10) List Orders");
+        System.out.println("11) Logout");
         System.out.println("0) Exit");
     }
 }

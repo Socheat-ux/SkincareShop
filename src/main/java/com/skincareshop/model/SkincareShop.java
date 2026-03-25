@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import com.skincareshop.model.other.Customer;
 import com.skincareshop.model.other.Products;
+import com.skincareshop.model.other.ProductsItem;
 import com.skincareshop.model.other.Order;
 import com.skincareshop.model.staff.ManagerStaff;
 import com.skincareshop.model.staff.CashierStaff;
 import com.skincareshop.model.staff.Staff;
+import com.skincareshop.service.CartService;
 
 public class SkincareShop {
 
@@ -28,6 +30,7 @@ public class SkincareShop {
     private ArrayList<Order> orders;
     private ArrayList<Products> productItems;
     private Staff loggedInStaff;
+    private CartService cartService;
 
     public SkincareShop(String shopName, String address) {
         setShopName(shopName);
@@ -37,6 +40,7 @@ public class SkincareShop {
         customers = new ArrayList<>();
         orders = new ArrayList<>();
         productItems = new ArrayList<>();
+        cartService = new CartService();
 
         loggedInStaff = null;
         seedDefaultAdmin();
@@ -198,7 +202,7 @@ public class SkincareShop {
     //================================//
     //This function for create product (Handle by Staff)//
     //================================//
-    public void createProdcutItem(String productId, String name, String category,
+    public void createProductItem(String productId, String name, String category,
                                     double price, int stock, boolean available) {
         if (!requireStaffLogin() || !requirePermission(CREATE_PRODUCT_ITEM)) return;
 
@@ -218,14 +222,14 @@ public class SkincareShop {
     }
 
     public void createOrder(String customerPhone, String itemId, int qty) {
-        if (!requireStaffLogin() || !requirePermission(CREATE_ORDER)) return; // FIX: added permission check
+        if (!requireStaffLogin() || !requirePermission(CREATE_ORDER)) return; 
  
         if (isBlank(customerPhone) || isBlank(itemId) || qty <= 0) {
             setLastMessage("Cannot create order: invalid input.");
             return;
         }
  
-        // FIX: find customer by phone
+        // find customer by phone
         Customer customer = findCustomerByPhone(customerPhone);
         if (customer == null) {
             setLastMessage("Cannot create order: customer not found.");
@@ -265,35 +269,6 @@ public class SkincareShop {
         setLastMessage("Order created successfully: " + orderId);
     }
 
-    // public void createOrder(String customerPhone, String itemId, int qty) {
-
-    //     if (!requireStaffLogin()) return;
-
-    //     if (isBlank(customerPhone) || isBlank(itemId) || qty <= 0) {
-    //         setLastMessage("Cannot create order: invalid input.");
-    //         return;
-    //     }
-
-    //     Products item = findProductById(itemId);
-    //     if (item == null) {
-    //         setLastMessage("Cannot create order: menu item not found.");
-    //         return;
-    //     }
-    //     if (!item.isAvailable()) {
-    //         setLastMessage("Cannot create order: menu item is not available.");
-    //         return;
-    //     }
-
-        // if (!customer.deductBalance(total)) {
-        //     setLastMessage("Cannot create order: insufficient balance.");
-        //     return;
-        // }
-
-        // String orderId = "ORD" + (orders.size() + 1);
-        // orders.add(new Order(orderId, customer, item, qty, loggedInStaff));
-
-        // setLastMessage("Order created successfully: " + orderId);
-    //}
     
     // SET AVAILABILITY
     public void setProductAvailability(String productId, boolean available) {
@@ -306,6 +281,64 @@ public class SkincareShop {
         }
         product.setAvailable(available);
         setLastMessage("Product availability updated.");
+    }
+
+    //Add to cart
+    public void addToCart(String productId, int qty) {
+        if (!requireStaffLogin()) return;
+
+        Products product = findProductById(productId);
+
+        if (product == null) {
+            setLastMessage("Product not found.");
+            return;
+        }
+
+        try {
+            cartService.addProductsItem(product, qty);
+            setLastMessage("Product added to cart.");
+        } catch (Exception e) {
+            setLastMessage(e.getMessage());
+        }
+    }
+
+    public void viewCart() {
+        cartService.printInfo();
+    }
+
+    // For Checkout
+    public void checkout(String customerPhone) {
+        if (!requireStaffLogin() || !requirePermission(CREATE_ORDER)) return;
+
+        if (cartService.size() == 0) {
+            setLastMessage("Cart is empty.");
+            return;
+        }
+
+        Customer customer = findCustomerByPhone(customerPhone);
+        if (customer == null) {
+            setLastMessage("Customer not found.");
+            return;
+        }
+
+        double total = cartService.getTotalPrice();
+
+        if (customer.getBalance() < total) {
+            setLastMessage("Insufficient balance.");
+            return;
+        }
+
+        // Deduct balance
+        customer.setBalance(customer.getBalance() - total);
+
+        // Create orders from cart items
+        for (ProductsItem item : cartService.getItems()) {
+            String orderId = "ORD" + (orders.size() + 1);
+            orders.add(new Order(orderId, customer, item.getProduct(), item.getQuantity(), loggedInStaff));
+        }
+
+        cartService.clearCart();
+        setLastMessage("Checkout successful!");
     }
 
     // HELPER
