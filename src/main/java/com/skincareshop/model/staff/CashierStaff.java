@@ -15,7 +15,7 @@ public class CashierStaff extends Staff {
     @Override
     public boolean can(String action) {
         if (action.equals(SkincareShop.CREATE_ORDER) || action.equals(SkincareShop.CREATE_CUSTOMER)
-        || action.equals(SkincareShop.VIEW_CUSTOMER) || action.equals(SkincareShop.VIEW_CUSTOMER)){
+        || action.equals(SkincareShop.VIEW_ORDER) || action.equals(SkincareShop.VIEW_CUSTOMER)){
             return true;
         }
         return false; 

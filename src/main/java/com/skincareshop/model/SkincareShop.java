@@ -44,6 +44,7 @@ public class SkincareShop {
     public String getShopName() { return shopName; }
     public String getAddress() { return address; }
     public String getLastMessage() { return lastMessage; }
+    public Staff getLoggedInStaff() { return loggedInStaff; }
 
     public void setShopName(String shopName) {
         if (isBlank(shopName)) {
@@ -62,7 +63,17 @@ public class SkincareShop {
     private void setLastMessage(String msg) { lastMessage = msg; }
 
     private void seedDefaultAdmin() {
-        staffs.add(new ManagerStaff("S001", "Admin", "010000000", "admin", "1234", 2000));
+        
+        Staff seed = makeTempStaff("S001", "Admin", "010000000", "admin", "1234");
+        staffs.add(new ManagerStaff(seed, 2000));
+    }
+
+    private Staff makeTempStaff(String staffId, String fullName, String phone,
+                                String username, String password) {
+        return new Staff(staffId, fullName, phone, username, password) {
+            @Override
+            public boolean can(String action) { return false; }
+        };
     }
 
     //Function for require staff to login
@@ -142,15 +153,15 @@ public class SkincareShop {
             }
         }
         //check position
+        Staff seed = makeTempStaff(staffId, fullName, phone, username, password);
+
         if (position.equals("Manager")) {
-            staffs.add(new ManagerStaff(staffId, fullName, phone, username, password, 2000));
+            staffs.add(new ManagerStaff(seed, 2000));
             setLastMessage("Manager created successfully.");
-        }
-        else if (position.equals("Cashier")) {
-            staffs.add(new CashierStaff(staffId, fullName, phone, username, password, 1000));
+        } else if (position.equals("Cashier")) {
+            staffs.add(new CashierStaff(seed, 1000));
             setLastMessage("Cashier created successfully.");
-        }
-        else {
+        } else {
             setLastMessage("Unknown position!");
         }
     }

@@ -16,7 +16,7 @@ public class ManagerStaff extends Staff{
     public void setSalary(float salary) {
         if(salary < 800)
         {
-            System.out.println("error: need more salary");
+            throw new IllegalArgumentException("Salary must be at least 800!");
         }
         this.salary = salary;
         
