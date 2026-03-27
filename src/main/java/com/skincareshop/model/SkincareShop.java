@@ -71,16 +71,7 @@ public class SkincareShop {
 
     private void seedDefaultAdmin() {
         
-        Staff seed = makeTempStaff("S001", "Admin", "010000000", "admin", "1234");
-        staffs.add(new ManagerStaff(seed, 2000));
-    }
-
-    private Staff makeTempStaff(String staffId, String fullName, String phone,
-                                String username, String password) {
-        return new Staff(staffId, fullName, phone, username, password) {
-            @Override
-            public boolean can(String action) { return false; }
-        };
+        staffs.add(new ManagerStaff("S001", "Admin", "010000000", "admin", "1234", 2000));
     }
 
     //Function for require staff to login
@@ -159,17 +150,12 @@ public class SkincareShop {
                 return;
             }
         }
-        //check position
-        Staff seed = makeTempStaff(staffId, fullName, phone, username, password);
 
+        //check position
         if (position.equals("Manager")) {
-            staffs.add(new ManagerStaff(seed, 2000));
-            setLastMessage("Manager created successfully.");
+            staffs.add(new ManagerStaff(staffId, fullName, phone, username, password, 1500));
         } else if (position.equals("Cashier")) {
-            staffs.add(new CashierStaff(seed, 1000));
-            setLastMessage("Cashier created successfully.");
-        } else {
-            setLastMessage("Unknown position!");
+            staffs.add(new CashierStaff(staffId, fullName, phone, username, password, 500));
         }
     }
 
@@ -306,6 +292,17 @@ public class SkincareShop {
         cartService.printInfo();
     }
 
+    //Remove fro Cart
+    public void removeFromCart(int index) {
+        if (!requireStaffLogin()) return;
+        try {
+            cartService.removeProductsItem(index);
+            setLastMessage("Item removed from cart.");
+        } catch (IndexOutOfBoundsException e) {
+            setLastMessage("Invalid item number. Please choose a number from the list.");
+        }
+    }
+
     // For Checkout
     public void checkout(String customerPhone) {
         if (!requireStaffLogin() || !requirePermission(CREATE_ORDER)) return;
@@ -323,9 +320,12 @@ public class SkincareShop {
 
         double total = cartService.getTotalPrice();
 
+        // checkout() — insufficient balance
         if (customer.getBalance() < total) {
-            setLastMessage("Insufficient balance.");
-            return;
+            throw new IllegalStateException(
+                "Insufficient balance. Need $" + String.format("%.2f", total) +
+                ", customer has $" + String.format("%.2f", customer.getBalance())
+            );
         }
 
         // Deduct balance
@@ -353,7 +353,20 @@ public class SkincareShop {
     }
 
     // ======================== //
-    //       PRINT METHODS      //
+    //       PRINT ALL STAFF    //
+    // ======================== //
+
+    public void printStaffs() {
+        if (!requireStaffLogin()) return;
+        System.out.println("\n--- Staffs (" + staffs.size() + ") ---");
+        if (staffs.isEmpty()) { System.out.println("  No staffs."); return; }
+        for (int i = 0; i < staffs.size(); i++) {
+            System.out.println("  " + (i + 1) + ") " + staffs.get(i));
+        }
+    }
+
+    // ======================== //
+    //       PRINT ORDERS       //
     // ======================== //
     public void printOrders() {
         if (!requireStaffLogin() || !requirePermission(VIEW_ORDER)) return;
@@ -364,6 +377,9 @@ public class SkincareShop {
         }
     }
 
+    // ======================== //
+    //       PRINT CUSTOMER     //
+    // ======================== //
     public void printCustomers() {
         if (!requireStaffLogin() || !requirePermission(VIEW_ORDER)) return;
 

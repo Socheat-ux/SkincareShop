@@ -4,9 +4,10 @@ public class ManagerStaff extends Staff{
 
     private float salary;
     
-    public ManagerStaff(Staff s, float salary) {
-        super(s.getStaffId(), s.getFullName(), s.getPhone(), s.getUsername(), s.getPassword());
-        this.setSalary(salary);
+    public ManagerStaff(String staffId, String fullName, String phone,
+                    String username, String password, float salary) {
+        super(staffId, fullName, phone, username, password);
+        setSalary(salary);
     }
 
     public float getSalary() {

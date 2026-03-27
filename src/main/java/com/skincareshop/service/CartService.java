@@ -74,7 +74,9 @@ public class CartService {
     public void removeProductsItem(int index) {
 
         if (index < 0 || index >= cart.size()) {
-            throw new IllegalArgumentException("Invalid index!");
+            throw new IndexOutOfBoundsException(
+                "Invalid cart index: " + index + ". Cart has " + cart.size() + " items."
+            );
         }
 
         ProductsItem item = cart.get(index);
@@ -91,7 +93,9 @@ public class CartService {
     public void updateQuantityProductsItem(int index, int newQuantity) {
 
         if (index < 0 || index >= cart.size()) {
-            throw new IllegalArgumentException("Invalid index!");
+            throw new IndexOutOfBoundsException(
+                "Invalid cart index: " + index + ". Cart has " + cart.size() + " items."
+            );
         }
 
         if (newQuantity <= 0) {

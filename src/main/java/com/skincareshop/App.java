@@ -3,19 +3,31 @@ package com.skincareshop;
 import java.util.Scanner;
 
 import com.skincareshop.model.SkincareShop;
-import com.skincareshop.model.staff.ManagerStaff;
-import com.skincareshop.model.staff.Staff;
 
 public class App {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        SkincareShop shop = new SkincareShop("Blossom", "Phnom Penh");
-  
+        SkincareShop shop = new SkincareShop("Blosoom", "Phnom Penh");
+
+        shop.staffLogin("admin", "1234");
+
+        shop.createStaff("S002", "Sokha", "012000001", "sokha", "1234", "Manager");
+        shop.createStaff("S003", "Dara",  "012000002", "dara",  "1234", "Cashier");
+
+        shop.createCustomer("C001", "Maly",  "017111111", "maly123",  100.00);
+        shop.createCustomer("C002", "Bopha", "018222222", "bopha456",  50.00);
+
+        shop.createProductItem("P001", "Aloe Vera Gel",   "Moisturizer",  5.99, 20, true);
+        shop.createProductItem("P002", "Rose Toner",      "Toner",        8.50, 15, true);
+        shop.createProductItem("P003", "Vitamin C Serum", "Serum",       15.00, 10, true);
+        shop.createProductItem("P004", "SPF 50 Sunscreen","Sunscreen",   12.00,  8, false);
+        
+        shop.staffLogout();
+
         int choice;
 
         do {
-
             if (shop.getLoggedInStaff() == null) {
 
                 printMainMenu();
@@ -80,12 +92,21 @@ public class App {
                         System.out.print("Position (Manager/Cashier): ");
                         String position = sc.nextLine();
 
-                        shop.createStaff(staffId, fullName, phone, username, password, position);
-                        System.out.println(shop.getLastMessage());
+                        try {
+                            shop.createStaff(staffId, fullName, phone, username, password, position);
+                            System.out.println(shop.getLastMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
                         break;
                     }
 
-                    case 2: { // CREATE CUSTOMER
+                    case 2: {
+                        shop.printStaffs();
+                        break;
+                    }
+
+                    case 3: { // CREATE CUSTOMER
                         System.out.print("Customer ID: ");
                         String customerId = sc.nextLine();
 
@@ -102,12 +123,16 @@ public class App {
                         double balance = sc.nextDouble();
                         sc.nextLine();
 
-                        shop.createCustomer(customerId, fullName, phone, password, balance);
-                        System.out.println(shop.getLastMessage());
+                        try {
+                            shop.createCustomer(customerId, fullName, phone, password, balance);
+                            System.out.println(shop.getLastMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
                         break;
                     }
 
-                    case 3: { // CREATE PRODUCT
+                    case 4: { // CREATE PRODUCT
                         System.out.print("Product ID: ");
                         String productId = sc.nextLine();
 
@@ -134,7 +159,7 @@ public class App {
                         break;
                     }
 
-                    case 4: { // SET PRODUCT AVAILABILITY
+                    case 5: { // SET PRODUCT AVAILABILITY
                         System.out.print("Product ID: ");
                         String productId = sc.nextLine();
 
@@ -149,7 +174,7 @@ public class App {
                         break;
                     }
 
-                    case 5: { // ADD TO CART
+                    case 6: { // ADD TO CART
                         shop.printProductItems();
 
                         System.out.print("Product ID: ");
@@ -159,41 +184,68 @@ public class App {
                         int qty = sc.nextInt();
                         sc.nextLine();
 
-                        shop.addToCart(productId, qty);
-                        System.out.println(shop.getLastMessage());
+                        try {
+                            shop.addToCart(productId, qty);
+                            System.out.println(shop.getLastMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
                         break;
+                        
                     }
 
-                    case 6: { // VIEW CART
+                    case 7: { // VIEW CART
                         shop.viewCart();
+
+                        System.out.print("Enter item number to remove (0 to cancel): ");
+                        int index = sc.nextInt();
+                        sc.nextLine();
+
+                        if (index == 0) {
+                            System.out.println("Cancelled.");
+                            break;  // exit without removing anything
+                        }
+
+                        try {
+                            shop.removeFromCart(index - 1);  // -1 to convert to 0-based
+                            System.out.println(shop.getLastMessage());
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
                         break;
                     }
 
-                    case 7: { // CHECKOUT
+                    case 8: { // CHECKOUT
                         System.out.print("Customer phone: ");
                         String phone = sc.nextLine();
 
-                        shop.checkout(phone);
-                        System.out.println(shop.getLastMessage());
+                        try {
+                            shop.checkout(phone);
+                            System.out.println(shop.getLastMessage());
+                        } catch (IllegalStateException e) {
+                            System.out.println("Payment failed: " + e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
                         break;
                     }
 
-                    case 8: { // LIST CUSTOMERS
+                    case 9: { // LIST CUSTOMERS
                         shop.printCustomers();
                         break;
                     }
 
-                    case 9: { // LIST PRODUCTS
+                    case 10: { // LIST PRODUCTS
                         shop.printProductItems();
                         break;
                     }
 
-                    case 10: { // LIST ORDERS
+                    case 11: { // LIST ORDERS
                         shop.printOrders();
                         break;
                     }
 
-                    case 11: { // LOGOUT
+                    case 12: { // LOGOUT
                         shop.staffLogout();
                         System.out.println(shop.getLastMessage());
                         break;
@@ -226,16 +278,17 @@ public class App {
         System.out.println("\n=== STAFF MENU (Logged In) ===");
         System.out.println("Logged in: " + shop.getLoggedInStaff());
         System.out.println("1) Create Staff");
-        System.out.println("2) Create Customer");
-        System.out.println("3) Create Product");
-        System.out.println("4) Set Product Availability");
-        System.out.println("5) Add to Cart");
-        System.out.println("6) View Cart");
-        System.out.println("7) Checkout");
-        System.out.println("8) List Customers");
-        System.out.println("9) List Products");
-        System.out.println("10) List Orders");
-        System.out.println("11) Logout");
+        System.out.println("2) View Staff");
+        System.out.println("3) Create Customer");
+        System.out.println("4) Create Order");
+        System.out.println("5) Set Product Availability");
+        System.out.println("6) Add to Cart");
+        System.out.println("7) View Cart");
+        System.out.println("8) Checkout");
+        System.out.println("9) List Customers");
+        System.out.println("10) List Products");
+        System.out.println("11) List Orders");
+        System.out.println("12) Logout");
         System.out.println("0) Exit");
     }
 }

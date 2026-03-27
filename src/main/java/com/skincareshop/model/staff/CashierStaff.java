@@ -6,10 +6,10 @@ public class CashierStaff extends Staff {
  
     private float salary;
 
-    public CashierStaff(Staff S1, float salary) {
-        super(S1.getStaffId(), S1.getFullName(), S1.getPhone(), S1.getUsername(), 
-        S1.getPassword());
-        this.setSalary(salary);
+    public CashierStaff(String staffId, String fullName, String phone,
+                    String username, String password, float salary) {
+        super(staffId, fullName, phone, username, password);
+        setSalary(salary);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class CashierStaff extends Staff {
 
     public void setSalary(float salary) {
         if (salary < 400) {
-            throw new IllegalArgumentException("ERROR!");
+            throw new IllegalArgumentException("ERROR! Salary must be more than 400$!");
         }
         this.salary = salary;
         
