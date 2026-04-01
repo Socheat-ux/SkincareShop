@@ -19,7 +19,7 @@ public class ProductsItem {
 
     public void setQuantity(int quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Quantity must be greater than 0!");
         }
         this.quantity = quantity;
     }

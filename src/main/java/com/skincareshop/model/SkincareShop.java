@@ -341,6 +341,16 @@ public class SkincareShop {
         setLastMessage("Checkout successful!");
     }
 
+    public void updateCartQuantity(int index, int newQty) {
+        if (!requireStaffLogin()) return;
+        try {
+            cartService.updateQuantityProductsItem(index, newQty);
+            setLastMessage("Cart item updated.");
+        } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
+            setLastMessage("Could not update: " + e.getMessage());
+        }
+    }
+
     // HELPER
     private Products findProductById(String productId) {
         if (isBlank(productId)) return null;
@@ -391,8 +401,6 @@ public class SkincareShop {
     }
 
     public void printProductItems() {
-        if (!requireStaffLogin()) return;
-
         System.out.println("\n--- Products (" + productItems.size() + ") ---");
         if (productItems.size() == 0) System.out.println("No products.");
         for (int i = 0; i < productItems.size(); i++) {
