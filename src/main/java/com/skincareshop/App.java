@@ -15,9 +15,6 @@ public class App {
         shop.createStaff("S002", "Sokha", "012000001", "sokha", "1234", "Manager");
         shop.createStaff("S003", "Dara",  "012000002", "dara",  "1234", "Cashier");
 
-        shop.createCustomer("C001", "Maly",  "017111111", "maly123",  100.00);
-        shop.createCustomer("C002", "Bopha", "018222222", "bopha456",  50.00);
-
         shop.createProductItem("P001", "Aloe Vera Gel",   "Moisturizer",  5.99, 20, true);
         shop.createProductItem("P002", "Rose Toner",      "Toner",        8.50, 15, true);
         shop.createProductItem("P003", "Vitamin C Serum", "Serum",       15.00, 10, true);
@@ -74,29 +71,33 @@ public class App {
                 switch (choice) {
 
                     case 1: { // CREATE STAFF
-                        System.out.print("Staff ID: ");
-                        String staffId = sc.nextLine();
+                        if (shop.getLoggedInStaff().getPosition() == "Manager") {
+                            System.out.print("Staff ID: ");
+                            String staffId = sc.nextLine();
 
-                        System.out.print("Full Name: ");
-                        String fullName = sc.nextLine();
+                            System.out.print("Full Name: ");
+                            String fullName = sc.nextLine();
 
-                        System.out.print("Phone: ");
-                        String phone = sc.nextLine();
+                            System.out.print("Phone: ");
+                            String phone = sc.nextLine();
 
-                        System.out.print("Username: ");
-                        String username = sc.nextLine();
+                            System.out.print("Username: ");
+                            String username = sc.nextLine();
 
-                        System.out.print("Password: ");
-                        String password = sc.nextLine();
+                            System.out.print("Password: ");
+                            String password = sc.nextLine();
 
-                        System.out.print("Position (Manager/Cashier): ");
-                        String position = sc.nextLine();
+                            System.out.print("Position (Manager/Cashier): ");
+                            String position = sc.nextLine();
 
-                        try {
-                            shop.createStaff(staffId, fullName, phone, username, password, position);
-                            System.out.println(shop.getLastMessage());
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Error: " + e.getMessage());
+                            try {
+                                shop.createStaff(staffId, fullName, phone, username, password, position);
+                                System.out.println(shop.getLastMessage());
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("Error: " + e.getMessage());
+                            }
+                        } else {
+                            System.out.println("Error: Only Managers can create staff.");
                         }
                         break;
                     }
