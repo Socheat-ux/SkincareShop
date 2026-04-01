@@ -79,13 +79,20 @@ public class Products {
 
     @Override
     public String toString() {
-        return "Products{" +
-                "productId='" + productId + '\'' +
-                ", name='" + name + '\'' +
-                ", category='" + category + '\'' +
-                ", price=" + price +
-                ", stock=" + stock +
-                ", available=" + available +
-                '}';
+        // return "Products{" +
+        //         "productId='" + productId + '\'' +
+        //         ", name='" + name + '\'' +
+        //         ", category='" + category + '\'' +
+        //         ", price=" + price +
+        //         ", stock=" + stock +
+        //         ", available=" + available +
+        //         '}';
+
+
+        // return String.format("Product[ID: %s, Name: %s, Category: %s, Price: $%.2f, Stock: %d, Available: %b]",
+        //         productId, name, category, price, stock, available);
+
+        return String.format("%-6s | %-20s | %-12s | $%6.2f | Stock: %3d | %s",
+            productId, name, category, price, stock, available ? "Available" : "Unavailable");
     }
 }

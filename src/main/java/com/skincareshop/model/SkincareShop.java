@@ -400,8 +400,15 @@ public class SkincareShop {
         }
     }
 
+    // ======================== //
+    //       PRINT PRODUCTS     //
+    // ======================== //
+
     public void printProductItems() {
         System.out.println("\n--- Products (" + productItems.size() + ") ---");
+            System.out.println(String.format("%-1s %-7s | %-20s | %-12s | %-7s | %-10s | %s",
+            "#", "ID", "Name", "Category", "Price", "Stock", "Status"));
+            System.out.println("=".repeat(85));
         if (productItems.size() == 0) System.out.println("No products.");
         for (int i = 0; i < productItems.size(); i++) {
             System.out.println((i + 1) + ") " + productItems.get(i));

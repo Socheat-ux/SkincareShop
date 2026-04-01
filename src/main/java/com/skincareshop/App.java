@@ -71,7 +71,7 @@ public class App {
                 switch (choice) {
 
                     case 1: { // CREATE STAFF
-                        if (shop.getLoggedInStaff().getPosition() == "Manager") {
+                        if (shop.getLoggedInStaff().can(SkincareShop.CREATE_STAFF)) {
                             System.out.print("Staff ID: ");
                             String staffId = sc.nextLine();
 
@@ -97,7 +97,7 @@ public class App {
                                 System.out.println("Error: " + e.getMessage());
                             }
                         } else {
-                            System.out.println("Error: Only Managers can create staff.");
+                            System.out.println("\nError: Only Manager or Admin has permission to create staff!");
                         }
                         break;
                     }
@@ -134,44 +134,52 @@ public class App {
                     }
 
                     case 4: { // CREATE PRODUCT
-                        System.out.print("Product ID: ");
-                        String productId = sc.nextLine();
+                        if (shop.getLoggedInStaff().can(SkincareShop.CREATE_PRODUCT_ITEM)) {
+                            System.out.print("Product ID: ");
+                            String productId = sc.nextLine();
 
-                        System.out.print("Name: ");
-                        String name = sc.nextLine();
+                            System.out.print("Name: ");
+                            String name = sc.nextLine();
 
-                        System.out.print("Category: ");
-                        String category = sc.nextLine();
+                            System.out.print("Category: ");
+                            String category = sc.nextLine();
 
-                        System.out.print("Price: ");
-                        double price = sc.nextDouble();
+                            System.out.print("Price: ");
+                            double price = sc.nextDouble();
 
-                        System.out.print("Stock: ");
-                        int stock = sc.nextInt();
+                            System.out.print("Stock: ");
+                            int stock = sc.nextInt();
 
-                        System.out.print("Available? (1=Yes, 0=No): ");
-                        int a = sc.nextInt();
-                        sc.nextLine();
+                            System.out.print("Available? (1=Yes, 0=No): ");
+                            int a = sc.nextInt();
+                            sc.nextLine();
 
-                        boolean available = (a == 1);
+                            boolean available = (a == 1);
 
-                        shop.createProductItem(productId, name, category, price, stock, available);
-                        System.out.println(shop.getLastMessage());
+                            shop.createProductItem(productId, name, category, price, stock, available);
+                            System.out.println(shop.getLastMessage());
+                        } else {
+                            System.out.println("\nError: Only Manager or Admin has permission to create product!");
+                        }
                         break;
                     }
 
                     case 5: { // SET PRODUCT AVAILABILITY
-                        System.out.print("Product ID: ");
-                        String productId = sc.nextLine();
+                        if (!shop.getLoggedInStaff().can(SkincareShop.SET_PRODUCT_AVAILABLITY)) {
+                            System.out.print("Product ID: ");
+                            String productId = sc.nextLine();
 
-                        System.out.print("Available? (1=Yes, 0=No): ");
-                        int a = sc.nextInt();
-                        sc.nextLine();
+                            System.out.print("Available? (1=Yes, 0=No): ");
+                            int a = sc.nextInt();
+                            sc.nextLine();
 
-                        boolean available = (a == 1);
+                            boolean available = (a == 1);
 
-                        shop.setProductAvailability(productId, available);
-                        System.out.println(shop.getLastMessage());
+                            shop.setProductAvailability(productId, available);
+                            System.out.println(shop.getLastMessage());
+                        } else {
+                            System.out.println("\nError: Only Manager or Admin has permission to set product availability!");
+                        }
                         break;
                     }
 
