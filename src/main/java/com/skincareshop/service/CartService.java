@@ -151,7 +151,7 @@ public class CartService {
             return;
         }
 
-        System.out.println("\n----- CART -----");
+        System.out.println("\n==========< CART >==========");
 
         int i = 1;
         for (ProductsItem item : cart) {
@@ -159,7 +159,7 @@ public class CartService {
             i++;
         }
 
-        System.out.println("------------------------------");
+        System.out.println("============================");
         System.out.printf("Grand Total: $%.2f%n", getTotalPrice());
     }
 }

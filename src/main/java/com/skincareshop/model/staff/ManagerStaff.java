@@ -6,7 +6,7 @@ public class ManagerStaff extends Staff{
     
     public ManagerStaff(String staffId, String fullName, String phone,
                     String username, String password, float salary) {
-        super(staffId, fullName, phone, username, password);
+        super(staffId, fullName, phone, username, password, "Manager");
         setSalary(salary);
     }
 
@@ -25,7 +25,8 @@ public class ManagerStaff extends Staff{
 
     @Override
     public String toString() {
-        return super.toString()+"\nManagerStaff [\"Position: Manager salary=" + salary + "]";
+        return super.toString() + String .format(" | %-10s | %.2f",
+        "Manager", salary);
     }
 
     @Override

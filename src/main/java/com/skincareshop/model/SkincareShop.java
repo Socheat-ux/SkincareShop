@@ -121,9 +121,9 @@ public class SkincareShop {
                 return;
             }
         }
-        setLastMessage("Login failed: Usrname not found!");
+        setLastMessage("\nLogin failed: Username not found!");
     }
-
+ 
     //==============================//
     //This function for staff logout//
     //==============================//
@@ -368,10 +368,15 @@ public class SkincareShop {
 
     public void printStaffs() {
         if (!requireStaffLogin()) return;
-        System.out.println("\n--- Staffs (" + staffs.size() + ") ---");
+
+        System.out.println("\n--- Staffs (" + staffs.size() + ") ---\n");
+        System.out.println(String.format("%-1s %-18s | %-15s | %-15s | %-10s | %-10s | %s",
+        "#", "Name", "Phone number", "Username", "Status", "Position", "Salary"));
+        System.out.println("=".repeat(94));
+
         if (staffs.isEmpty()) { System.out.println("  No staffs."); return; }
         for (int i = 0; i < staffs.size(); i++) {
-            System.out.println("  " + (i + 1) + ") " + staffs.get(i));
+            System.out.println((i + 1) + ") " + staffs.get(i));
         }
     }
 
@@ -405,7 +410,7 @@ public class SkincareShop {
     // ======================== //
 
     public void printProductItems() {
-        System.out.println("\n--- Products (" + productItems.size() + ") ---");
+        System.out.println("\n--- Products (" + productItems.size() + ") ---\n");
             System.out.println(String.format("%-1s %-7s | %-20s | %-12s | %-7s | %-10s | %s",
             "#", "ID", "Name", "Category", "Price", "Stock", "Status"));
             System.out.println("=".repeat(85));

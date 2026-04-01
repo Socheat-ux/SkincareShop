@@ -16,14 +16,14 @@ public abstract class Staff implements IStaff{
 
     // constructor
     public Staff(String staffId, String fullName, String phone,
-                 String username, String password) {
+                 String username, String password, String position) {
 
         setStaffId(staffId);
         setFullName(fullName);
         setPhone(phone);
         setUsername(username);
         setPassword(password);
-        getPosition();
+        setPosition(position);
 
         this.active = true;
     }
@@ -80,6 +80,13 @@ public abstract class Staff implements IStaff{
         else this.password = pw;
     }
 
+    public void setPosition(String position) {
+        if (isBlank(position)) {
+            this.position = "Staff";
+        }
+        else this.position = position.trim();
+    }
+
     public void setActive(boolean active) {
         this.active = active;
     }
@@ -101,12 +108,14 @@ public abstract class Staff implements IStaff{
     // ====== toString ======
     @Override
     public String toString() {
-        return "S{" +
-                ", fullName='" + fullName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", username='" + username + '\'' +
-                ", active=" + active +
-                '}';
+        // return "S{" +
+        //         ", fullName='" + fullName + '\'' +
+        //         ", phone='" + phone + '\'' +
+        //         ", username='" + username + '\'' +
+        //         ", active=" + active +
+        //         '}';
+        return String.format("%-17s | %-15s | %-15s | %-10s",
+        fullName, phone, username, active ? "Active" : "Inactive");
     }
 
     @Override

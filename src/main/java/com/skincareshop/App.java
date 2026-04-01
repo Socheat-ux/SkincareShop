@@ -63,7 +63,6 @@ public class App {
             } else {
 
                 printStaffMenu(shop);
-
                 System.out.print("Choose: ");
                 choice = sc.nextInt();
                 sc.nextLine();
@@ -206,7 +205,7 @@ public class App {
                     case 7: { // VIEW CART
                         shop.viewCart();
 
-                        System.out.print("Enter item number to remove (0 to cancel): ");
+                        System.out.print("Enter item number to remove (0 to Exit): ");
                         int index = sc.nextInt();
                         sc.nextLine();
 
@@ -319,29 +318,21 @@ public class App {
 
     // ===== MENUS =====
     private static void printMainMenu() {
-        System.out.println("\n=== MAIN MENU (Not Logged In) ===");
+        System.out.println("\n========< MAIN MENU (Not Logged In) >========\n");
         System.out.println("1) Staff Login");
         System.out.println("2) View Products");
         System.out.println("0) Exit");
     }
 
     private static void printStaffMenu(SkincareShop shop) {
-        System.out.println("\n=== STAFF MENU (Logged In) ===");
-        System.out.println("Logged in: " + shop.getLoggedInStaff());
-        System.out.println(" 1) Create Staff");
-        System.out.println(" 2) View Staff");
-        System.out.println(" 3) Create Customer");
-        System.out.println(" 4) Create Product");
-        System.out.println(" 5) Set Product Availability");
-        System.out.println(" 6) Add to Cart");
-        System.out.println(" 7) View Cart / Remove Item");
-        System.out.println(" 8) Update Cart Quantity");   
-        System.out.println(" 9) Checkout");
-        System.out.println("10) Direct Order (no cart)");
-        System.out.println("11) List Customers");
-        System.out.println("12) List Products");
-        System.out.println("13) List Orders");
-        System.out.println("14) Logout");
-        System.out.println(" 0) Exit");
+        System.out.println("\n========< STAFF MENU (Logged In) >========");
+        System.out.println("Login As: " + shop.getLoggedInStaff().getUsername() + " (" + shop.getLoggedInStaff().getPosition() + ")\n");
+
+        String format = "%-3s) %-25s | %-3s) %-25s | %-3s) %-25s\n";
+        System.out.printf(format, "1", "Create Staff",  "6", "Add to Cart", "11", "List Customers");
+        System.out.printf(format, "2", "View Staff",    "7", "View Cart / Remove Item", "12", "List Products");
+        System.out.printf(format, "3", "Create Customer","8",  "Update Cart Quantity", "13", "List Orders");
+        System.out.printf(format, "4", "Create Product", "9", "Checkout", "14", "Logout");
+        System.out.printf(format, "5", "Set Product Availability", "10", "Direct Order (no cart)", "0", "Exit");
     }
 }

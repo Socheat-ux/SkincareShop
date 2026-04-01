@@ -8,7 +8,7 @@ public class CashierStaff extends Staff {
 
     public CashierStaff(String staffId, String fullName, String phone,
                     String username, String password, float salary) {
-        super(staffId, fullName, phone, username, password);
+        super(staffId, fullName, phone, username, password, "Cashier");
         setSalary(salary);
     }
 
@@ -49,9 +49,8 @@ public class CashierStaff extends Staff {
 
     @Override
     public String toString() {
-        return super.toString() + 
-                ", salary=" + salary +
-                '}';
+        return super.toString() + String.format(" | %-10s | %.2f",
+        "Cashier", salary);
     }
 
 
