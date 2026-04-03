@@ -74,11 +74,13 @@ public class Customer {
   
     @Override
     public String toString() {
-        return "Customer{" +
-                "customerId='" + customerId + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", balance=" + balance +
-                '}';
+        // return "Customer{" +
+        //         "customerId='" + customerId + '\'' +
+        //         ", fullName='" + fullName + '\'' +
+        //         ", phone='" + phone + '\'' +
+        //         ", balance=" + balance +
+        //         '}';
+        return String.format("%-9s | %-20s | %-15s | $%.2f",
+                customerId, fullName, phone, balance) + "\n";
     }
 }

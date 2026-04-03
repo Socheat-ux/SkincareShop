@@ -15,6 +15,8 @@ public class App {
         shop.createStaff("S002", "Sokha", "012000001", "sokha", "1234", "Manager");
         shop.createStaff("S003", "Dara",  "012000002", "dara",  "1234", "Cashier");
 
+        shop.createCustomer("C001", "John Doe", "012345678", "password123", 100.00);
+
         shop.createProductItem("P001", "Aloe Vera Gel",   "Moisturizer",  5.99, 20, true);
         shop.createProductItem("P002", "Rose Toner",      "Toner",        8.50, 15, true);
         shop.createProductItem("P003", "Vitamin C Serum", "Serum",       15.00, 10, true);
@@ -53,7 +55,7 @@ public class App {
                     }
 
                     case 0:
-                        System.out.println("Goodbye!");
+                        System.out.println("Exit program Successfully!");
                         break;
 
                     default:
@@ -281,7 +283,7 @@ public class App {
                     }
 
                     case 0:
-                        System.out.println("Goodbye!");
+                        System.out.println("Exit program Successfully!");
                         break;
 
                     default:
@@ -304,14 +306,14 @@ public class App {
     }
 
     private static void printStaffMenu(SkincareShop shop) {
-        System.out.println("\n========< STAFF MENU (Logged In) >========");
+        System.out.println("\n" + "=".repeat(30) + "< STAFF MENU (Logged In) >" + "=".repeat(30));
         System.out.println("Login As: " + shop.getLoggedInStaff().getUsername() + " (" + shop.getLoggedInStaff().getPosition() + ")\n");
 
-        String format = "%-3s) %-25s | %-3s) %-25s | %-3s) %-25s\n";
-        System.out.printf(format, "1", "Create Staff",  "6", "Add to Cart", "10", "List Customers");
-        System.out.printf(format, "2", "View Staff",    "7", "View Cart / Remove Item", "11", "List Products");
-        System.out.printf(format, "3", "Create Customer","8",  "Update Cart Quantity", "12", "List Orders");
-        System.out.printf(format, "4", "Create Product", "9", "Checkout", "13", "Logout");
-        System.out.printf(format, "5", "Set Product Availability", "0", "Exit");
+        String format = "%-3s) %-25s | %-3s) %-25s | %-3s %-25s\n";
+        System.out.printf(format, "1", "Create Staff",  "6", "Add to Cart", "11  )", "List Products");
+        System.out.printf(format, "2", "View Staff",    "7", "View Cart / Remove Item", "12  )", "List Orders");
+        System.out.printf(format, "3", "Create Customer","8",  "Update Cart Quantity", "13  )", "Logout");
+        System.out.printf(format, "4", "Create Product", "9", "Checkout", "0   )", "Exit");
+        System.out.printf(format, "5", "Set Product Availability", "10", "List Customers", "", "");
     }
 }

@@ -324,7 +324,7 @@ public class SkincareShop {
         System.out.println("\n--- Staffs (" + staffs.size() + ") ---\n");
         System.out.println(String.format("%-1s %-18s | %-15s | %-15s | %-10s | %-10s | %s",
         "#", "Name", "Phone number", "Username", "Status", "Position", "Salary"));
-        System.out.println("=".repeat(94));
+        System.out.println("-".repeat(94));
 
         if (staffs.isEmpty()) { System.out.println("  No staffs."); return; }
         for (int i = 0; i < staffs.size(); i++) {
@@ -337,10 +337,15 @@ public class SkincareShop {
     // ======================== //
     public void printOrders() {
         if (!requireStaffLogin() || !requirePermission(VIEW_ORDER)) return;
-        System.out.println("\n--- Orders (" + orders.size() + ") ---");
+
+        System.out.println("\n" + "=".repeat(41) + " Orders (" + orders.size() + ") " + "=".repeat(41));
+        System.out.println(String.format("%-1s %-6s | %-16s | %-20s | %-10s | %-10s | %s",
+        "#", "Order ID", "Customer Phone", "Item Name", "Quantity", "Total Price", "Created By", "Paid"));
+        System.out.println("-".repeat(94));      
+
         if (orders.isEmpty()) { System.out.println("  No orders yet."); return; }
-        for (int i = 0; i < orders.size(); i++) {
-            System.out.println("  " + (i + 1) + ") " + orders.get(i));
+        for (int i = 0; i < orders.size(); i++) { 
+            System.out.println((i + 1) + ") " + orders.get(i));
         }
     }
 
@@ -350,7 +355,12 @@ public class SkincareShop {
     public void printCustomers() {
         if (!requireStaffLogin() || !requirePermission(VIEW_ORDER)) return;
 
-        System.out.println("\n--- Customers (" + customers.size() + ") ---");
+        System.out.println("\n" + "=".repeat(25) + " Customers (" + customers.size() + ") " + "=".repeat(26));
+
+        System.out.println(String.format("%-1s %-10s | %-20s | %-15s | %s",
+        "#", "ID", "Name", "Phone", "Balance"));
+        System.out.println("-".repeat(66));
+
         if (customers.size() == 0) System.out.println("No customers.");
         for (int i = 0; i < customers.size(); i++) {
             System.out.println((i + 1) + ") " + customers.get(i));
@@ -363,9 +373,11 @@ public class SkincareShop {
 
     public void printProductItems() {
         System.out.println("\n--- Products (" + productItems.size() + ") ---\n");
-            System.out.println(String.format("%-1s %-7s | %-20s | %-12s | %-7s | %-10s | %s",
-            "#", "ID", "Name", "Category", "Price", "Stock", "Status"));
-            System.out.println("=".repeat(85));
+
+        System.out.println(String.format("%-1s %-7s | %-20s | %-12s | %-7s | %-10s | %s",
+        "#", "ID", "Name", "Category", "Price", "Stock", "Status"));
+        System.out.println("-".repeat(85));
+
         if (productItems.size() == 0) System.out.println("No products.");
         for (int i = 0; i < productItems.size(); i++) {
             System.out.println((i + 1) + ") " + productItems.get(i));
