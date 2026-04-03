@@ -218,7 +218,12 @@ public class SkincareShop {
             return;
         }
         product.setAvailable(available);
-        setLastMessage("Product availability updated.");
+        
+        if (!available) {
+            setLastMessage("'" + product.getName() + "' marked unavailable!");
+        } else {
+            setLastMessage("'" + product.getName() + "' is now available.");
+        }
     }
 
     //Add to cart
@@ -232,9 +237,14 @@ public class SkincareShop {
             return;
         }
 
+        if (!product.isAvailable()) {
+            setLastMessage("Cannot add to cart: '" + product.getName() + "' is not available.");
+            return;
+        }
+
         try {
             cartService.addProductsItem(product, qty);
-            setLastMessage("Product added to cart.");
+            setLastMessage("'" + product.getName() + "' x" + qty + " added to cart.");
         } catch (Exception e) {
             setLastMessage(e.getMessage());
         }
