@@ -15,7 +15,7 @@ public class App {
         shop.createStaff("S002", "Sokha", "012000001", "sokha", "1234", "Manager");
         shop.createStaff("S003", "Dara",  "012000002", "dara",  "1234", "Cashier");
 
-        shop.createCustomer("C001", "John Doe", "012345678", "password123", 100.00);
+        shop.createCustomer("C001", "John Doe", "012345678", 100.00);
 
         shop.createProductItem("P001", "Aloe Vera Gel",   "Moisturizer",  5.99, 20, true);
         shop.createProductItem("P002", "Rose Toner",      "Toner",        8.50, 15, true);
@@ -119,15 +119,12 @@ public class App {
                             System.out.print("Phone: ");
                             String phone = sc.nextLine();
 
-                            System.out.print("Password: ");
-                            String password = sc.nextLine();
-
                             System.out.print("Balance: ");
                             double balance = sc.nextDouble();
                             sc.nextLine();
 
                             try {
-                                shop.createCustomer(customerId, fullName, phone, password, balance);
+                                shop.createCustomer(customerId, fullName, phone, balance);
                                 System.out.println(shop.getLastMessage());
                             } catch (IllegalArgumentException e) {
                                 System.out.println("Error: " + e.getMessage());

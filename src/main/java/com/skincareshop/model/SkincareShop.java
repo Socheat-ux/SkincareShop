@@ -163,7 +163,7 @@ public class SkincareShop {
     //This function for create customer (Hanlde by Staff)//
     //=================================//
     public void createCustomer(String customerId, String fullName, String phone, 
-                                String password, double balance ) {
+                                double balance ) {
         if (!requireStaffLogin() || !requirePermission(CREATE_CUSTOMER)) return;
 
         if (isBlank(customerId) || isBlank(phone)) {
