@@ -259,43 +259,22 @@ public class App {
                         break;
                     }
 
-                    case 10: { // LIST CUSTOMERS
-                        System.out.print("Customer phone: ");
-                        String phone = sc.nextLine();
-                        System.out.print("Product ID: ");
-                        String productId = sc.nextLine();
-                        System.out.print("Quantity: ");
-                        int qty = sc.nextInt();
-                        sc.nextLine();
-
-                        try {
-                            shop.createOrder(phone, productId, qty);
-                            System.out.println(shop.getLastMessage());
-                        } catch (IllegalStateException e) {
-                            System.out.println("Payment failed: " + e.getMessage());
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Error: " + e.getMessage());
-                        }
-                        break;
-
-                    }
-
-                    case 11: { // list customer
+                    case 10: { // list customer
                         shop.printCustomers();
                         break;
                     }
 
-                    case 12: { // LIST PRODUCTS
+                    case 11: { // LIST PRODUCTS
                         shop.printProductItems();
                         break;
                     }
 
-                    case 13: { // LIST ORDERS
+                    case 12: { // LIST ORDERS
                         shop.printOrders();
                         break;
                     }
 
-                    case 14: { // LOGOUT
+                    case 13: { // LOGOUT
                         shop.staffLogout();
                         System.out.println(shop.getLastMessage());
                         break;
@@ -329,10 +308,10 @@ public class App {
         System.out.println("Login As: " + shop.getLoggedInStaff().getUsername() + " (" + shop.getLoggedInStaff().getPosition() + ")\n");
 
         String format = "%-3s) %-25s | %-3s) %-25s | %-3s) %-25s\n";
-        System.out.printf(format, "1", "Create Staff",  "6", "Add to Cart", "11", "List Customers");
-        System.out.printf(format, "2", "View Staff",    "7", "View Cart / Remove Item", "12", "List Products");
-        System.out.printf(format, "3", "Create Customer","8",  "Update Cart Quantity", "13", "List Orders");
-        System.out.printf(format, "4", "Create Product", "9", "Checkout", "14", "Logout");
-        System.out.printf(format, "5", "Set Product Availability", "10", "Direct Order (no cart)", "0", "Exit");
+        System.out.printf(format, "1", "Create Staff",  "6", "Add to Cart", "10", "List Customers");
+        System.out.printf(format, "2", "View Staff",    "7", "View Cart / Remove Item", "11", "List Products");
+        System.out.printf(format, "3", "Create Customer","8",  "Update Cart Quantity", "12", "List Orders");
+        System.out.printf(format, "4", "Create Product", "9", "Checkout", "13", "Logout");
+        System.out.printf(format, "5", "Set Product Availability", "0", "Exit");
     }
 }

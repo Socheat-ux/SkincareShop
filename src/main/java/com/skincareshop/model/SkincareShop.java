@@ -207,54 +207,6 @@ public class SkincareShop {
         setLastMessage("Product created successfully.");
     }
 
-    public void createOrder(String customerPhone, String itemId, int qty) {
-        if (!requireStaffLogin() || !requirePermission(CREATE_ORDER)) return; 
- 
-        if (isBlank(customerPhone) || isBlank(itemId) || qty <= 0) {
-            setLastMessage("Cannot create order: invalid input.");
-            return;
-        }
- 
-        // find customer by phone
-        Customer customer = findCustomerByPhone(customerPhone);
-        if (customer == null) {
-            setLastMessage("Cannot create order: customer not found.");
-            return;
-        }
- 
-        Products item = findProductById(itemId);
-        if (item == null) {
-            setLastMessage("Cannot create order: product not found.");
-            return;
-        }
-        if (!item.isAvailable()) {
-            setLastMessage("Cannot create order: product is not available.");
-            return;
-        }
- 
-        // check sufficient stock (Products has reduceStock() which also validates)
-        if (item.getStock() < qty) {
-            setLastMessage("Cannot create order: insufficient stock.");
-            return;
-        }
- 
-        double total = item.getPrice() * qty;
- 
-        // check customer has enough balance
-        if (customer.getBalance() < total) {
-            setLastMessage("Cannot create order: insufficient balance.");
-            return;
-        }
- 
-        // deduct balance and reduce stock using existing methods
-        customer.setBalance(customer.getBalance() - total);
-        item.reduceStock(qty);  // uses Products.reduceStock() which already exists
- 
-        String orderId = "ORD" + (orders.size() + 1);
-        orders.add(new Order(orderId, customer, item, qty, loggedInStaff));
-        setLastMessage("Order created successfully: " + orderId);
-    }
-
     
     // SET AVAILABILITY
     public void setProductAvailability(String productId, boolean available) {
