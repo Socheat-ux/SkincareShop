@@ -167,7 +167,7 @@ public class App {
                         }
 
                         case 5: { // SET PRODUCT AVAILABILITY
-                            if (!shop.getLoggedInStaff().can(SkincareShop.SET_PRODUCT_AVAILABLITY)) {
+                            if (shop.getLoggedInStaff().can(SkincareShop.SET_PRODUCT_AVAILABLITY)) {
                                 System.out.print("Product ID: ");
                                 String productId = sc.nextLine();
 

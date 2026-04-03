@@ -181,7 +181,7 @@ public class SkincareShop {
                 return;
             }
         }
-        customers.add(new Customer(customerId, fullName, phone, password, balance));
+        customers.add(new Customer(customerId, fullName, phone, balance));
         setLastMessage("Customer created successfully.");
     }
 
@@ -368,6 +368,7 @@ public class SkincareShop {
         for (int i = 0; i < orders.size(); i++) { 
             System.out.println((i + 1) + ") " + orders.get(i));
         }
+        System.out.println("\n");
     }
 
     // ======================== //
@@ -386,6 +387,7 @@ public class SkincareShop {
         for (int i = 0; i < customers.size(); i++) {
             System.out.println((i + 1) + ") " + customers.get(i));
         }
+        System.out.println("\n");
     }
 
     // ======================== //

@@ -70,16 +70,7 @@ public class Order {
         String itemName = (item == null) ? "UNKNOWN" : item.getName();
         String staffId = (createdBy == null) ? "UNKNOWN" : createdBy.getStaffId();
 
-        // return "Order{" +
-        //         "orderId='" + orderId + '\'' +
-        //         ", customerPhone='" + customerPhone + '\'' +
-        //         ", item='" + itemName + '\'' +
-        //         ", quantity=" + quantity +
-        //         ", totalPrice=" + totalPrice +
-        //         ", createdByStaff='" + staffId + '\'' +
-        //         ", paid=" + paid +
-        //         '}';
         return String.format("%-7s | %-16s | %-20s | %10d | $%8.2f   | %s",
-        orderId, customerPhone, itemName, quantity, totalPrice, staffId) + "\n";
+        orderId, customerPhone, itemName, quantity, totalPrice, staffId);
     }
 }
