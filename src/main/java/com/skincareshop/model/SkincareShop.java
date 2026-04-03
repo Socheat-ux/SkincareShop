@@ -290,9 +290,30 @@ public class SkincareShop {
         }
 
         cartService.clearCart();
-        setLastMessage("Checkout successful!");
+        setLastMessage("Checkout successful! " + customer.getFullName() +
+                       " charged $" + String.format("%.2f", total) + ".");
     }
 
+
+    // =======================================================
+    // CHECKOUT BY INDEX — thin wrapper around checkout()
+    // Translates a customer list index into a phone number,
+    // then delegates all logic to checkout() above.
+    //========================================================
+    public void checkoutByIndex(int index) {
+        if (!requireStaffLogin() || !requirePermission(CREATE_ORDER)) return;
+ 
+        if (index < 0 || index >= customers.size()) {
+            throw new IllegalArgumentException(
+                "Invalid customer number. Please choose between 1 and " + customers.size() + "."
+            );
+        }
+ 
+        // Translate index → phone, then hand off to checkout()
+        checkout(customers.get(index).getPhone());
+    }
+    
+    //Update cart quantity
     public void updateCartQuantity(int index, int newQty) {
         if (!requireStaffLogin()) return;
         try {
