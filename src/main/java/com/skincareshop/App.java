@@ -280,7 +280,7 @@ public class App {
 
                     }
 
-                    case 11: {
+                    case 11: { // list customer
                         shop.printCustomers();
                         break;
                     }
