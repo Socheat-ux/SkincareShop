@@ -7,8 +7,6 @@ public interface IStaff {
     String getUsername();
     String getPosition();
     boolean isActive();
-    boolean checkPassword(String password);
     public abstract boolean can(String action);
     
-
 }

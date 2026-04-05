@@ -55,7 +55,7 @@ public class Order {
         this.createdBy = createdBy;
     }
 
-    // ===== Methods =====
+    
     public void calculateTotal() {
         if (item == null) {
             totalPrice = 0;

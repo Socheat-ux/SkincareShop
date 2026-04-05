@@ -108,12 +108,6 @@ public abstract class Staff implements IStaff{
     // ====== toString ======
     @Override
     public String toString() {
-        // return "S{" +
-        //         ", fullName='" + fullName + '\'' +
-        //         ", phone='" + phone + '\'' +
-        //         ", username='" + username + '\'' +
-        //         ", active=" + active +
-        //         '}';
         return String.format("%-17s | %-15s | %-15s | %-10s",
         fullName, phone, username, active ? "Active" : "Inactive");
     }

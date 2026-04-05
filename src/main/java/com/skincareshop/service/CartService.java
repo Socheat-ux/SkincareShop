@@ -13,11 +13,9 @@ public class CartService {
         cart = new ArrayList<>();
     }
 
-    // =========================
-    // GETTERS
-    // =========================
+    
     public ArrayList<ProductsItem> getItems() {
-        return new ArrayList<>(cart); // return copy (safe)
+        return new ArrayList<>(cart); 
     }
 
     public int size() {

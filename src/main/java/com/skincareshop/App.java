@@ -12,8 +12,8 @@ public class App {
 
         shop.staffLogin("admin", "1234");
 
-        shop.createStaff("S002", "Sokha", "012000001", "sokha", "1234", "Manager");
-        shop.createStaff("S003", "Dara",  "012000002", "dara",  "1234", "Cashier");
+        shop.createStaff("S002", "Sokha", "012000001", "sokha", "1133", "Manager");
+        shop.createStaff("S003", "Dara",  "012000002", "dara",  "1122", "Cashier");
 
         shop.createCustomer("C001", "John Doe", "012345678", 100.00);
 
