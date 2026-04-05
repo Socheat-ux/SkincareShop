@@ -19,6 +19,15 @@ public class Products {
 
     }
 
+    //Getter
+    public String getProductId() { return productId; }
+    public String getName() { return name; }
+    public String getCategory() { return category; }
+    public double getPrice() { return price; }
+    public int getStock() { return stock; }
+    public boolean isAvailable() { return available; }
+
+
     public void setProductId(String productId) {
         if (productId == null || productId.trim().isEmpty()) {
             this.productId = "UNKNOWN";
@@ -69,29 +78,10 @@ public class Products {
         this.available = available;
     }
 
-    //Getter
-    public String getProductId() { return productId; }
-    public String getName() { return name; }
-    public String getCategory() { return category; }
-    public double getPrice() { return price; }
-    public int getStock() { return stock; }
-    public boolean isAvailable() { return available; }
+
 
     @Override
     public String toString() {
-        // return "Products{" +
-        //         "productId='" + productId + '\'' +
-        //         ", name='" + name + '\'' +
-        //         ", category='" + category + '\'' +
-        //         ", price=" + price +
-        //         ", stock=" + stock +
-        //         ", available=" + available +
-        //         '}';
-
-
-        // return String.format("Product[ID: %s, Name: %s, Category: %s, Price: $%.2f, Stock: %d, Available: %b]",
-        //         productId, name, category, price, stock, available);
-
         return String.format("%-6s | %-20s | %-12s | $%6.2f | Stock: %3d | %s",
             productId, name, category, price, stock, available ? "Available" : "Unavailable");
     }
